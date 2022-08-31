@@ -2,12 +2,7 @@ import React from 'react';
 import { SideBar } from '../components';
 
 const Overview = () => {
-  return (
-    <div>
-      {' '}
-      <SideBar />
-    </div>
-  );
+  return <div>overview</div>;
 };
 
 export default Overview;

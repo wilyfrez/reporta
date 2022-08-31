@@ -1,4 +1,6 @@
-import { FiShoppingBag } from 'react-icons/fi';
+import { FiShoppingBag, FiUsers, FiTarget } from 'react-icons/fi';
+import { GrOverview } from 'react-icons/gr';
+import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 
 export const links = [
   {
@@ -6,7 +8,7 @@ export const links = [
     links: [
       {
         name: 'overview',
-        icon: <FiShoppingBag />,
+        icon: <GrOverview />,
       },
     ],
   },
@@ -17,11 +19,11 @@ export const links = [
     links: [
       {
         name: 'staff',
-        icon: <FiShoppingBag />,
+        icon: <FiUsers />,
       },
       {
         name: 'departments',
-        icon: <FiShoppingBag />,
+        icon: <HiOutlineOfficeBuilding />,
       },
       {
         name: 'templates',
@@ -39,7 +41,7 @@ export const links = [
     links: [
       {
         name: 'goals',
-        icon: <FiShoppingBag />,
+        icon: <FiTarget />,
       },
       {
         name: 'reports',

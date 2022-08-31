@@ -1,8 +1,19 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ContextProvider } from './contexts/ContextProvider';
+import { Home, Login, Overview, Register } from './pages';
 
-function App() {
-  return <div className=" text-3xl underline uppercase">Go Helooword</div>;
-}
+const App = () => (
+  <ContextProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/Account/*" element={<Overview />} />
+      </Routes>
+    </BrowserRouter>
+  </ContextProvider>
+);
 
 export default App;

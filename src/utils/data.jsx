@@ -1,6 +1,8 @@
-import { FiShoppingBag, FiUsers, FiTarget } from 'react-icons/fi';
+import { FiShoppingBag, FiUsers, FiTarget, FiEdit } from 'react-icons/fi';
 import { GrOverview } from 'react-icons/gr';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
+import { BiTrash } from 'react-icons/bi';
+import { GridActionsCellItem } from '@mui/x-data-grid';
 
 export const links = [
   {
@@ -180,5 +182,65 @@ export const pendingSubmissionsRows = [
     title: 'August week 5',
     type: 'Goal',
     due_date: '01/04/2022',
+  },
+];
+
+export const staffColumns = [
+  {
+    field: 'staff_id',
+    headerName: 'Staff ID',
+    width: '120',
+  },
+  {
+    headerName: 'Staff',
+    width: '200',
+    field: 'fullname',
+  },
+
+  {
+    field: 'email',
+    headerName: 'Email',
+    width: '200',
+  },
+  {
+    field: 'phone',
+    headerName: 'Phone',
+    width: '150',
+  },
+  {
+    headerName: 'Department',
+    width: '170',
+    field: 'department',
+  },
+  {
+    headerName: 'Birthday',
+    width: '170',
+    field: 'birthday',
+  },
+  {
+    field: 'actions',
+    type: 'actions',
+    width: 100,
+    getActions: () => [
+      <GridActionsCellItem icon={<FiEdit />} label="Edit" />,
+      <GridActionsCellItem icon={<BiTrash />} label="Delete" />,
+    ],
+  },
+];
+
+export const staffRows = [
+  {
+    staff_id: 1112,
+    fullname: 'Obi Micheal',
+    email: 'obi@gm.com',
+    phone: '0909393433',
+    department: 'ICT Programming',
+  },
+  {
+    staff_id: 15512,
+    fullname: 'Mavel Micheal',
+    email: 'obi@gm.com',
+    phone: '0909393433',
+    department: 'ICT Programming',
   },
 ];

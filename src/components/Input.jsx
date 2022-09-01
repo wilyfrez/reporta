@@ -22,7 +22,7 @@ const Input = ({
           </span>
         )}
         <input
-          class="placeholder:italic placeholder:text-slate-400 text-slate-400 inline-block bg-white w-full py-3  px-3 shadow-sm focus:outline-none  sm:text-sm"
+          className="placeholder:italic placeholder:text-slate-400 text-slate-400 inline-block bg-white w-full py-3  px-3 shadow-sm focus:outline-none  sm:text-sm"
           placeholder={placeholder || label}
           type={type}
           id={name}

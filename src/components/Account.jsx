@@ -104,8 +104,8 @@ const Account = () => {
               <Route path="/stacked" element={<Stacked />} /> */}
             </Routes>
           </div>
-          <Footer />
         </div>
+        <Footer />
       </div>
     </div>
   );

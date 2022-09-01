@@ -115,3 +115,70 @@ export const themeColors = [
     name: 'orange-theme',
   },
 ];
+
+export const colors = [
+  'bg-blue-500',
+  'bg-green-500',
+  'bg-emerald-500',
+  'bg-cyan-500',
+  'bg-violet-500',
+  'bg-purple-500',
+  'bg-fuchsia-500',
+  'bg-pink-500',
+  'bg-neutral-500',
+  'bg-rose-500',
+  'bg-indigo-500',
+  'bg-sky-500',
+  'bg-teal-500',
+  'bg-yellow-500',
+  'bg-lime-500',
+  'bg-zinc-500',
+  'bg-orange-500',
+  'bg-red-500',
+  'bg-amber-500',
+  'bg-stone-500',
+  'bg-gray-500',
+];
+
+export const pendingSubmissionsColumns = [
+  {
+    field: 'title',
+    headerName: 'Title',
+    width: 150,
+  },
+  {
+    field: 'type',
+    headerName: 'Type',
+    width: 150,
+  },
+  {
+    field: 'due_date',
+    headerName: 'Due Date',
+    width: 150,
+  },
+  {
+    headerName: 'Action',
+    width: 150,
+  },
+];
+
+export const pendingSubmissionsRows = [
+  {
+    id: 1,
+    title: 'August week 5',
+    type: 'Goal',
+    due_date: '01/04/2022',
+  },
+  {
+    id: 1,
+    title: 'August week 5',
+    type: 'Goal',
+    due_date: '01/04/2022',
+  },
+  {
+    id: 1,
+    title: 'August week 5',
+    type: 'Goal',
+    due_date: '01/04/2022',
+  },
+];

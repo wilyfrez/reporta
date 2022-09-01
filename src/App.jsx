@@ -4,6 +4,8 @@ import { Account } from './components';
 import { ContextProvider } from './contexts/ContextProvider';
 import { Home, Login, Overview, Register } from './pages';
 
+import './App.css';
+
 const App = () => (
   <ContextProvider>
     <BrowserRouter>

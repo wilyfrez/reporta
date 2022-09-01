@@ -1,7 +1,10 @@
 import { Card } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import {
+  pendingSubmissionsColumns,
+  pendingSubmissionsRows,
+} from '../utils/data';
 import React from 'react';
-import { SideBar } from '../components';
-import { PendingSubmissions } from '../components/Tables';
 
 const Overview = () => {
   return (
@@ -56,7 +59,16 @@ const Overview = () => {
       </div>
 
       {/* pending data table */}
-      <PendingSubmissions />
+      <div className=" dark:bg-secondary-dark-bg bg-white  rounded-lg p-8">
+        <p className="mb-4">Pending Submissions</p>
+
+        <div className=" dark:text-gray-200 text-gray-700  h-72">
+          <DataGrid
+            rows={pendingSubmissionsRows}
+            columns={pendingSubmissionsColumns}
+          />
+        </div>
+      </div>
     </div>
   );
 };

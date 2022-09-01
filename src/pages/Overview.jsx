@@ -4,7 +4,6 @@ import {
   pendingSubmissionsColumns,
   pendingSubmissionsRows,
 } from '../utils/data';
-import React from 'react';
 
 const Overview = () => {
   return (

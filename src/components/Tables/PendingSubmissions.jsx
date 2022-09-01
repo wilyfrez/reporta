@@ -4,15 +4,15 @@ import {
   GridComponent,
 } from '@syncfusion/ej2-react-grids';
 
-import { pendingSubmissionsData } from '../../utils/data';
+import { pendingSubmissionsRows } from '../../utils/data';
 
 const PendingSubmissions = () => {
-  console.log(pendingSubmissionsData);
+  console.log(pendingSubmissionsRows);
   return (
     <div className=" dark:bg-secondary-dark-bg bg-white  rounded-lg my-6 ">
       <h4>Pending Submssion</h4>
 
-      <GridComponent dataSource={pendingSubmissionsData} height="350">
+      <GridComponent dataSource={pendingSubmissionsRows} height="350">
         <ColumnsDirective>
           <ColumnDirective
             field="title"

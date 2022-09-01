@@ -5,3 +5,4 @@ export { default as SideBar } from './SideBar';
 export { default as Input } from './Input';
 export { default as ThemeSettings } from './ThemeSettings';
 export { default as Avatar } from './Avatar';
+export { default as Header } from './Header';

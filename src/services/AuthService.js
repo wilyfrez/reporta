@@ -16,9 +16,16 @@ class AuthService {
   }
 
   async login(data) {
-    const response = await axios.post(`${API_URL}/login`, data);
-    localStorage.setItem('user', JSON.stringify(response.data.user));
-    return response.data;
+    try {
+      const response = await axios.post(`${API_URL}/login`, data);
+      return response.data;
+    } catch (error) {
+      return {
+        status: false,
+        message: 'Ooops! Something went wrong. Try again',
+        responseMessage: error.message,
+      };
+    }
   }
 
   async verify(token) {

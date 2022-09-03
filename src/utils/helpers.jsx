@@ -13,22 +13,13 @@ export const getInitials = (fullname) => {
 };
 
 export const validateAccountRegistrationForm = (formData) => {
-  const { name, email, phone, country, address, password, confirm_password } =
-    formData;
+  const { name, email, phone, country, address } = formData;
   let result = {
     status: false,
     message: 'Oops! Form validation failed.',
   };
 
-  if (
-    !name ||
-    !email ||
-    !phone ||
-    !country ||
-    !address ||
-    !password ||
-    !confirm_password
-  ) {
+  if (!name || !email || !phone || !country || !address) {
     result = {
       status: false,
       message: 'Complete the form.',
@@ -38,16 +29,6 @@ export const validateAccountRegistrationForm = (formData) => {
       status: false,
       message: 'Enter a valid email',
     };
-  } else if (password.length < 8) {
-    result = {
-      status: false,
-      message: 'Password should be at least 8 characters',
-    };
-  } else if (password !== confirm_password) {
-    result = {
-      status: false,
-      message: 'Both password must match',
-    };
   } else {
     result = {
       status: true,
@@ -56,6 +37,7 @@ export const validateAccountRegistrationForm = (formData) => {
   }
   return result;
 };
+
 export const validateAccountActivationForm = (formData) => {
   const { email, password, confirm_password } = formData;
   let result = {
@@ -77,6 +59,33 @@ export const validateAccountActivationForm = (formData) => {
     result = {
       status: false,
       message: 'Both password must match',
+    };
+  } else {
+    result = {
+      status: true,
+      message: 'Validation passed',
+    };
+  }
+  return result;
+};
+
+export const validateAccountLoginForm = (formData) => {
+  const { email, password } = formData;
+
+  let result = {
+    status: false,
+    message: 'Oops! Form validation failed.',
+  };
+
+  if (!password || !email) {
+    result = {
+      status: false,
+      message: 'Complete the form.',
+    };
+  } else if (!EMAIL_REGEX.test(email)) {
+    result = {
+      status: false,
+      message: 'Enter a valid email',
     };
   } else {
     result = {

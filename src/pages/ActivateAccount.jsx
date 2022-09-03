@@ -56,6 +56,8 @@ const ActivateAccount = () => {
     }
     localStorage.setItem('user', JSON.stringify(response.user));
     setCurrentUser(AuthService.getCurrentUser());
+    setFormData(null);
+    setError(null);
     navigate('/account');
   };
 

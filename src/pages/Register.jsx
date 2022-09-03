@@ -1,14 +1,21 @@
 import { Alert, Paper } from '@mui/material';
 import { Input } from '../components';
 import { SiShopware } from 'react-icons/si';
-import { HiOutlineMail, HiOutlineOfficeBuilding } from 'react-icons/hi';
+import {
+  HiOutlineMail,
+  HiOutlineOfficeBuilding,
+  HiOutlineLocationMarker,
+  HiOutlineFlag,
+} from 'react-icons/hi';
 import { BsShieldLock, BsTelephone } from 'react-icons/bs';
 import { useStateContext } from '../contexts/ContextProvider';
 import { AuthService } from '../services';
 import { validateAccountRegistrationForm } from '../utils/helpers';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { formData, error, setError } = useStateContext();
+  const navigate = useNavigate();
 
   const handleFormSubmit = async () => {
     const validationResult = validateAccountRegistrationForm(formData);
@@ -24,10 +31,8 @@ const Login = () => {
       });
       return;
     }
-    setError({});
-    console.table(response);
-    // to build the ui without changing url
-    // verification email sent uo
+    setError(null);
+    navigate('/activation-instruction');
   };
 
   return (
@@ -70,7 +75,7 @@ const Login = () => {
         />
 
         <Input
-          icon={<BsTelephone />}
+          icon={<HiOutlineFlag />}
           type="tel"
           label="Country"
           name="country"
@@ -78,7 +83,7 @@ const Login = () => {
         />
 
         <Input
-          icon={<BsTelephone />}
+          icon={<HiOutlineLocationMarker />}
           type="address"
           label="Office Address"
           name="address"
@@ -87,7 +92,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="inline-block  w-full bg-blue-500 font-semibold hover:bg-blue-700 cursor-pointer text-white rounded-lg h-[45px] mt-4"
+          className="inline-block  w-full bg-blue-500 font-semibold hover:bg-blue-600 cursor-pointer text-white rounded-lg h-[45px] mt-4"
           onClick={handleFormSubmit}
         >
           Get Started

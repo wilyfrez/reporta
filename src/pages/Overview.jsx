@@ -8,7 +8,7 @@ import {
 const Overview = () => {
   return (
     <div className=" dark:text-gray-200 text-gray-700  p-12">
-      <h3 className="uppercase font-bold mb-4">Office of The CEO</h3>
+      <h3 className="uppercase font-bold mb-4">Office of The CEO </h3>
 
       <Card
         sx={{

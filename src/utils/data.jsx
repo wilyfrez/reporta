@@ -4,6 +4,20 @@ import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { BiTrash } from 'react-icons/bi';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 
+export const API_URL =
+  import.meta.env.MODE === 'development'
+    ? import.meta.env.VITE_API_URL_TEST
+    : import.meta.env.VITE_API_URL_LIVE;
+
+export const PATHS = {
+  organizations: 'organizations',
+  staff: 'staff',
+  department: 'department',
+};
+
+export const EMAIL_REGEX =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 export const links = [
   {
     title: 'Dashboard',

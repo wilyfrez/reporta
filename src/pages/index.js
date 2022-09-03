@@ -4,3 +4,4 @@ export { default as Register } from './Register';
 export { default as Overview } from './Overview';
 export { default as Departments } from './Departments';
 export { default as Staff } from './Staff';
+export { default as ActivateAccount } from './ActivateAccount';

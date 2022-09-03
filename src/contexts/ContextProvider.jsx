@@ -25,7 +25,7 @@ export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
   const [error, setError] = useState(null);
-  const [formData, setformData] = useState({});
+  const [formData, setFormData] = useState({ good: 'greats' });
   const [uploadData, setUploadData] = useState({});
   const [editData, setEditData] = useState({});
   const [deleteData, setDeleteData] = useState({});
@@ -46,21 +46,21 @@ export const ContextProvider = ({ children }) => {
     setIsClicked({ ...initialState, [clicked]: true });
 
   const handleFormInputChange = (e, name) => {
-    setformData((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: e.target.value,
     }));
   };
 
   const handleFormFileChange = (e, name) => {
-    setformData((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: e.target.files[0],
     }));
   };
 
   const updateFormData = (value, name) => {
-    setformData((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -86,7 +86,7 @@ export const ContextProvider = ({ children }) => {
         themeSettings,
         setThemeSettings,
         formData,
-        setformData,
+        setFormData,
         updateFormData,
         handleFormInputChange,
         handleFormFileChange,

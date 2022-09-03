@@ -7,17 +7,18 @@ const Input = ({
   name,
   placeholder,
   required = false,
+  readOnly = false,
 }) => {
   const { handleFormInputChange, formData } = useStateContext();
 
   return (
-    <label class="block mb-4">
-      <span class="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm mb-1 font-medium text-slate-700">
+    <label className="block mb-4">
+      <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm mb-1 font-medium text-slate-700">
         {label}
       </span>
       <div className="flex flex-row justify-start items-center border border-slate-300 rounded-lg  ">
         {icon && (
-          <span class="left-0 flex items-center pl-2 text-slate-400 ">
+          <span className="left-0 flex items-center pl-2 text-slate-400 ">
             {icon}
           </span>
         )}
@@ -26,6 +27,9 @@ const Input = ({
           placeholder={placeholder || label}
           type={type}
           id={name}
+          value={formData[name] || ''}
+          onChange={(e) => handleFormInputChange(e, name)}
+          readOnly={readOnly}
         />
       </div>
     </label>

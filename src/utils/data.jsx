@@ -4,10 +4,7 @@ import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { BiTrash } from 'react-icons/bi';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 
-export const API_URL =
-  import.meta.env.MODE === 'development'
-    ? import.meta.env.VITE_API_URL_TEST
-    : import.meta.env.VITE_API_URL_LIVE;
+export const API_URL = import.meta.env.VITE_API_URL;
 
 export const PATHS = {
   organizations: 'organizations',

@@ -80,13 +80,15 @@ const NavBar = () => {
             onClick={() => {}}
           >
             <div className="w-8 h-8">
-              <Avatar text="Wifred Obruhe" />
+              <Avatar
+                text={`${currentUser?.first_name} ${currentUser?.last_name}`}
+              />
             </div>
 
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{' '}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                Kent Dodds
+                {currentUser?.first_name}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />

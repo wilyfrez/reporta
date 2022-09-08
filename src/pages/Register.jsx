@@ -31,7 +31,7 @@ const Login = () => {
       });
       return;
     }
-    setError(null);
+    setError({});
     navigate('/activation-instruction');
   };
 
@@ -45,7 +45,7 @@ const Login = () => {
           <SiShopware /> <span>Reporta</span>
         </div>
 
-        {error && (
+        {error.message && (
           <Alert variant="outlined" severity="error" sx={{ mb: 2 }}>
             {error.message}
           </Alert>

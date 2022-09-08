@@ -95,3 +95,50 @@ export const validateAccountLoginForm = (formData) => {
   }
   return result;
 };
+
+export const validateStaffAccountRegistrationForm = (formData) => {
+  const { first_name, last_name, phone, email } = formData;
+  let result = {
+    status: false,
+    message: 'Oops! Form validation failed.',
+  };
+
+  if (!first_name || !last_name || !phone || !email) {
+    result = {
+      status: false,
+      message: 'Complete all required field.',
+    };
+  } else if (!EMAIL_REGEX.test(email)) {
+    result = {
+      status: false,
+      message: 'Enter a valid email',
+    };
+  } else {
+    result = {
+      status: true,
+      message: 'Validation passed',
+    };
+  }
+  return result;
+};
+
+export const validateDepartmentCreationForm = (formData) => {
+  const { name } = formData;
+  let result = {
+    status: false,
+    message: 'Oops! Form validation failed.',
+  };
+
+  if (!name) {
+    result = {
+      status: false,
+      message: 'Complete all required field.',
+    };
+  } else {
+    result = {
+      status: true,
+      message: 'Validation passed',
+    };
+  }
+  return result;
+};

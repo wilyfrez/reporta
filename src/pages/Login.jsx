@@ -32,8 +32,8 @@ const Login = () => {
     }
     localStorage.setItem('user', JSON.stringify(response.user));
     setCurrentUser(AuthService.getCurrentUser());
-    setFormData(null);
-    setError(null);
+    setFormData({});
+    setError({});
     navigate(redirectPath, { replace: true });
   };
 
@@ -47,7 +47,7 @@ const Login = () => {
           <SiShopware /> <span>Reporta</span>
         </div>
 
-        {error && (
+        {error.message && (
           <Alert variant="outlined" severity="error" sx={{ mb: 2 }}>
             {error.message}
           </Alert>

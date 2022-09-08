@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Header, StaffDailog } from '../components';
-import { staffRows, staffColumns } from '../utils/data';
+import { Header, StaffDailog, DeleteDailog } from '../components';
+import { staffColumns } from '../utils/data';
 import { useStateContext } from '../contexts/ContextProvider';
+import { validateStaffAccountRegistrationForm } from '../utils/helpers';
+import { StaffService } from '../services';
 
 const Staff = () => {
   const {
@@ -10,11 +13,45 @@ const Staff = () => {
     handleClick,
     currentUser,
     setEditData,
+    formData,
+    setError,
     setformData,
+    setIsClicked,
+    initialState,
   } = useStateContext();
+
+  const [staffData, setStaffData] = useState([]);
+
+  useEffect(() => {
+    const getAllStaff = async () => {
+      const staff = await StaffService.getAllStaff();
+      setStaffData(staff);
+    };
+
+    getAllStaff();
+  }, []);
 
   const showStaffDialog = () => {
     handleClick('staff');
+  };
+
+  const handleStaffAccountRegistration = async () => {
+    const validationResult = validateStaffAccountRegistrationForm(formData);
+    if (!validationResult.status) {
+      setError(validationResult);
+      return;
+    }
+    const response = await StaffService.registerStaffAccount(formData);
+    if (!response.status) {
+      setError({
+        status: response.status,
+        message: response.message,
+      });
+      return;
+    }
+
+    setStaffData((preState) => [response.staff, ...preState]);
+    setIsClicked(initialState);
   };
 
   return (
@@ -35,12 +72,18 @@ const Staff = () => {
         <DataGrid
           autoHeight
           columns={staffColumns}
-          rows={staffRows}
-          getRowId={(row) => row.staff_id}
+          rows={staffData}
+          getRowId={(row) => row._id}
         />
       </div>
 
-      {isClicked.staff && <StaffDailog />}
+      {isClicked.staff && (
+        <StaffDailog
+          handleStaffAccountRegistration={handleStaffAccountRegistration}
+        />
+      )}
+
+      {isClicked.delete && <DeleteDailog />}
     </div>
   );
 };

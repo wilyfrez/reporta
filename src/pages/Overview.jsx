@@ -1,14 +1,18 @@
 import { Card } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { useStateContext } from '../contexts/ContextProvider';
 import {
   pendingSubmissionsColumns,
   pendingSubmissionsRows,
 } from '../utils/data';
 
 const Overview = () => {
+  const { currentUser } = useStateContext();
   return (
     <div className=" dark:text-gray-200 text-gray-700  p-12">
-      <h3 className="uppercase font-bold mb-4">Office of The CEO </h3>
+      <h3 className="uppercase font-bold mb-4">
+        {currentUser?.organization?.name}
+      </h3>
 
       <Card
         sx={{
@@ -23,7 +27,7 @@ const Overview = () => {
             Welcome
           </h1>
           <h1 className="text-white text-center font-bold text-3xl ">
-            Esteemed Brother Maxwell
+            Esteemed {`${currentUser?.first_name} ${currentUser?.last_name}`}
           </h1>
         </div>
       </Card>

@@ -1,8 +1,12 @@
+import React from 'react';
+
 import { FiShoppingBag, FiUsers, FiTarget, FiEdit } from 'react-icons/fi';
 import { GrOverview } from 'react-icons/gr';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { BiTrash } from 'react-icons/bi';
 import { GridActionsCellItem } from '@mui/x-data-grid';
+import { Avatar } from '../components';
+import { useStateContext } from '../contexts/ContextProvider';
 
 export const API_URL = import.meta.env.VITE_API_URL;
 
@@ -205,7 +209,21 @@ export const staffColumns = [
   {
     headerName: 'Staff',
     width: '200',
-    field: 'fullname',
+    // valueGetter: (params) => {
+    //   return `${params.row.first_name || ''} ${params.row.last_name || ''}`;
+    // },
+
+    renderCell: (params) => (
+      <div className="flex items-center space-x-2">
+        <Avatar
+          text={`${params.row.first_name || ''} ${params.row.last_name || ''}`}
+        />
+
+        <span>
+          {params.row.first_name || ''} {params.row.last_name || ''}
+        </span>
+      </div>
+    ),
   },
 
   {
@@ -232,26 +250,62 @@ export const staffColumns = [
     field: 'actions',
     type: 'actions',
     width: 100,
+    getActions: () => {
+      const { handleClick } = useStateContext();
+
+      return [
+        <GridActionsCellItem
+          onClick={() => handleClick('staff')}
+          icon={<FiEdit />}
+          label="Edit"
+        />,
+        <GridActionsCellItem
+          onClick={() => handleClick('delete')}
+          icon={<BiTrash />}
+          label="Delete"
+        />,
+      ];
+    },
+  },
+];
+
+export const departmentColumns = [
+  {
+    field: 'name',
+    headerName: 'Name',
+    width: '220',
+  },
+  {
+    field: 'hod',
+    headerName: 'Head of Department',
+    width: '220',
+    valueGetter: (params) => {
+      return `${params.row?.hod?.first_name || ''} ${
+        params.row?.hod?.last_name || ''
+      }`;
+    },
+  },
+  {
+    field: 'staff',
+    headerName: 'Staff',
+    width: '220',
+    renderCell: (params) => (
+      <div className="flex -space-x-2 overflow-hidden p-2">
+        <Avatar text="Nless Ma" border={true} />
+
+        <Avatar text="Nless Ma" border={true} />
+      </div>
+    ),
+  },
+
+  {
+    field: 'actions',
+    headerName: 'Action',
+    type: 'actions',
+    width: 100,
     getActions: () => [
       <GridActionsCellItem icon={<FiEdit />} label="Edit" />,
       <GridActionsCellItem icon={<BiTrash />} label="Delete" />,
     ],
-  },
-];
-
-export const staffRows = [
-  {
-    staff_id: 1112,
-    fullname: 'Obi Micheal',
-    email: 'obi@gm.com',
-    phone: '0909393433',
-    department: 'ICT Programming',
-  },
-  {
-    staff_id: 15512,
-    fullname: 'Mavel Micheal',
-    email: 'obi@gm.com',
-    phone: '0909393433',
-    department: 'ICT Programming',
   },
 ];

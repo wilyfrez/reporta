@@ -24,8 +24,8 @@ export const ContextProvider = ({ children }) => {
   const [themeSettings, setThemeSettings] = useState(false);
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
-  const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({ good: 'greats' });
+  const [error, setError] = useState({});
+  const [formData, setFormData] = useState({});
   const [uploadData, setUploadData] = useState({});
   const [editData, setEditData] = useState({});
   const [deleteData, setDeleteData] = useState({});

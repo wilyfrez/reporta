@@ -5,27 +5,18 @@ import AuthHeader from './AuthHeader';
 
 import { API_URL, PATHS } from '../utils/data';
 
-const { organizations, staff } = PATHS;
-
 class StaffService {
-  async getOrganizationStaff(organizationId) {
-    const response = await axios.get(
-      `${API_URL}/${ORGANIZATION_PATH}/${organizationId}/${STAFF_PATH}`,
-      {
-        headers: AuthHeader(),
-      }
-    );
+  async getAllStaff() {
+    const response = await axios.get(`${API_URL}/staff`, {
+      headers: AuthHeader(),
+    });
     return response.data.staff;
   }
 
-  async addStaff(organizationId, data) {
-    const response = await axios.post(
-      `${API_URL}/${ORGANIZATION_PATH}/${organizationId}/${STAFF_PATH}`,
-      data,
-      {
-        headers: AuthHeader(),
-      }
-    );
+  async registerStaffAccount(data) {
+    const response = await axios.post(`${API_URL}/staff`, data, {
+      headers: AuthHeader(),
+    });
     return response.data;
   }
 

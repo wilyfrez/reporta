@@ -56,14 +56,14 @@ const ActivateAccount = () => {
     }
     localStorage.setItem('user', JSON.stringify(response.user));
     setCurrentUser(AuthService.getCurrentUser());
-    setFormData(null);
-    setError(null);
+    setFormData({});
+    setError({});
     navigate('/account');
   };
 
   const activationForm = () => (
     <>
-      {error && (
+      {error.message && (
         <Alert variant="outlined" severity="error" sx={{ mb: 2 }}>
           {error.message || 'Oops! Something went wrong. Try again.'}
         </Alert>

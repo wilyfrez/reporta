@@ -1,34 +1,23 @@
-// /* eslint-disable comma-dangle */
-// /* eslint-disable class-methods-use-this */
-// import axios from 'axios';
-// import {
-//   API_URL,
-//   ORGANIZATION_PATH,
-//   DEPARTMENT_PATH,
-// } from '../utils/constants';
-// import AuthHeader from './AuthHeader';
+import axios from 'axios';
 
-// class DepartmentsService {
-//   async getOrganizationDepartments(organizationId) {
-//     const response = await axios.get(
-//       `${API_URL}/${ORGANIZATION_PATH}/${organizationId}/${DEPARTMENT_PATH}`,
-//       {
-//         headers: AuthHeader(),
-//       }
-//     );
-//     return response.data.departments;
-//   }
+import AuthHeader from './AuthHeader';
 
-//   async addDepartment(organizationId, data) {
-//     const response = await axios.post(
-//       `${API_URL}/${ORGANIZATION_PATH}/${organizationId}/${DEPARTMENT_PATH}`,
-//       data,
-//       {
-//         headers: AuthHeader(),
-//       }
-//     );
-//     return response.data;
-//   }
-// }
+import { API_URL, PATHS } from '../utils/data';
 
-// export default new DepartmentsService();
+class DepartmentsService {
+  async getAllDepartments() {
+    const response = await axios.get(`${API_URL}/departments/`, {
+      headers: AuthHeader(),
+    });
+    return response.data.departments;
+  }
+
+  async createDepartment(data) {
+    const response = await axios.post(`${API_URL}/departments`, data, {
+      headers: AuthHeader(),
+    });
+    return response.data;
+  }
+}
+
+export default new DepartmentsService();

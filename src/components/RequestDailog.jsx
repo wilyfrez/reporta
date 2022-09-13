@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useStateContext } from '../contexts/ContextProvider';
 import { MdOutlineCancel } from 'react-icons/md';
-import { Input } from './';
 import {
   Alert,
   Box,
@@ -15,7 +14,7 @@ import {
 } from '@mui/material';
 import { StaffService } from '../services';
 
-const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
+const RequestDailog = ({ departmentData, handleDepartmentAction }) => {
   const {
     currentUser,
     currentColor,
@@ -31,37 +30,8 @@ const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
     setEditDataId,
   } = useStateContext();
 
-  const [staffOptions, setStaffOptions] = useState([]);
-  // const [hod, setHod] = useState('');
-
-  useEffect(() => {
-    if (editDataId) {
-      setFormData(
-        departmentData.filter((department) => department._id === editDataId)[0]
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    const createOptions = async () => {
-      const allStaff = await StaffService.getAllStaff();
-
-      const optionsData = allStaff.map((staff) => ({
-        value: staff._id,
-        label: `${staff.first_name} ${staff.last_name}`,
-      }));
-
-      setStaffOptions(optionsData);
-    };
-    createOptions();
-  }, []);
-
-  const handleChange = (event) => {
-    handleFormInputChange(event, 'hod');
-  };
-
   const handleSubmit = () => {
-    handleDepartmentAction();
+    // console.log(formData);
   };
 
   const handleCloseDailog = () => {
@@ -70,12 +40,20 @@ const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
     setFormData({});
     setError({});
   };
+
+  const cateroryOptions = [
+    { value: 'Daily', label: 'Daily' },
+    { value: 'Weekly', label: 'Weekly' },
+    { value: 'Monthly', label: 'Monthly' },
+    { value: 'Halfly', label: 'Halfly' },
+  ];
+
   return (
     <div className="bg-half-transparent w-full fixed h-screen nav-item top-0 right-0 ">
       <div className="float-right h-screen  duration-1000 ease-in-out dark:text-gray-200 transition-all dark:bg-[#484B52] bg-white md:w-400 p-8 md:hover:overflow-auto">
         <div className="flex justify-between items-center">
           <p className="font-semibold text-lg">
-            {editDataId ? 'Update' : 'Add'} Department
+            {editDataId ? 'Update' : 'Request'} Goal
           </p>
 
           <IconButton
@@ -100,35 +78,48 @@ const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
           error={error.message && !formData?.name ? true : false}
           fullWidth
           variant="outlined"
-          label="Name"
-          id="name"
+          label="Goal title"
+          id="title"
           margin="normal"
           helperText={error.message && 'Required'}
           value={formData?.name || ''}
           required
-          onChange={(e) => handleFormInputChange(e, 'name')}
+          onChange={(e) => handleFormInputChange(e, 'title')}
         />
 
         <TextField
           fullWidth
-          id="hod"
+          id="category"
           variant="outlined"
           select
-          label="Head of Department"
+          label="Category"
           defaultValue=""
           margin="normal"
-          onChange={(e) => handleFormInputChange(e, 'hod')}
+          onChange={(e) => handleFormInputChange(e, 'category')}
           SelectProps={{
             native: true,
           }}
         >
           <option value=""></option>
-          {staffOptions.map((option) => (
+          {cateroryOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
-          ))}
+          ))}{' '}
         </TextField>
+
+        <TextField
+          fullWidth
+          id="due_date"
+          label="Due Date"
+          type="date"
+          margin="normal"
+          value={formData?.birthday || ''}
+          onChange={(e) => handleFormInputChange(e, 'due_date')}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
 
         <div className="mt-2">
           <button
@@ -145,4 +136,4 @@ const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
   );
 };
 
-export default DepartmentDailog;
+export default RequestDailog;

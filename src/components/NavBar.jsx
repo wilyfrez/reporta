@@ -7,7 +7,7 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 import { useStateContext } from '../contexts/ContextProvider';
-import { Avatar } from './';
+import { Avatar, UserProfile } from './';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -70,14 +70,18 @@ const NavBar = () => {
         <NavButton
           title="Notification"
           dotColor="rgb(254, 201, 15)"
-          customFunc={() => {}}
+          customFunc={() => {
+            handleClick('userProfile');
+          }}
           color={currentColor}
           icon={<RiNotification3Line />}
         />
         <TooltipComponent content="Profile" position="BottomCenter">
           <div
             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-            onClick={() => {}}
+            onClick={() => {
+              handleClick('userProfile');
+            }}
           >
             <div className="w-8 h-8">
               <Avatar
@@ -95,8 +99,8 @@ const NavBar = () => {
           </div>
         </TooltipComponent>
 
-        {/* {isClicked.notification && <Notification />}
-        {isClicked.userProfile && <UserProfile />} */}
+        {/* {isClicked.notification && <Notification />}*/}
+        {isClicked.userProfile && <UserProfile />}
       </div>
     </div>
   );

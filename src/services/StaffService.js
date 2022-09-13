@@ -1,23 +1,35 @@
-import { importProtectWorkbook } from '@syncfusion/ej2/spreadsheet';
 import axios from 'axios';
-// import { API_URL, ORGANIZATION_PATH, STAFF_PATH } from '../utils/constants';
+
 import AuthHeader from './AuthHeader';
 
 import { API_URL, PATHS } from '../utils/data';
+import AuthService from './AuthService';
 
 class StaffService {
   async getAllStaff() {
-    const response = await axios.get(`${API_URL}/staff`, {
-      headers: AuthHeader(),
-    });
-    return response.data.staff;
+    try {
+      const response = await axios.get(`${API_URL}/staff`, {
+        headers: AuthHeader(),
+      });
+      return response.data.staff;
+    } catch (error) {
+      if (error.response.logout) {
+        AuthService.logout();
+      }
+    }
   }
 
   async registerStaffAccount(data) {
-    const response = await axios.post(`${API_URL}/staff`, data, {
-      headers: AuthHeader(),
-    });
-    return response.data;
+    try {
+      const response = await axios.post(`${API_URL}/staff`, data, {
+        headers: AuthHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response.logout) {
+        AuthService.logout();
+      }
+    }
   }
 
   async updateStaff(organizationId, data, staffId) {
@@ -31,14 +43,17 @@ class StaffService {
     return response.data;
   }
 
-  async deleteStaff(organizationId, staffId) {
-    const response = await axios.delete(
-      `${API_URL}/${ORGANIZATION_PATH}/${organizationId}/${STAFF_PATH}/${staffId}`,
-      {
+  async deleteStaffAccount(staffId) {
+    try {
+      const response = await axios.delete(`${API_URL}/staff/${staffId}`, {
         headers: AuthHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response.logout) {
+        AuthService.logout();
       }
-    );
-    return response.data;
+    }
   }
 
   async resetStaffPassword(organizationId, staffId) {

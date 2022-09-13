@@ -3,31 +3,18 @@ import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { useStateContext } from '../contexts/ContextProvider';
 // import { GoalsService, StaffService } from '../services';
 
-const DeleteDailog = ({ data, setData, type }) => {
+const DeleteDailog = ({ handleDeleteAction }) => {
   const {
     currentColor,
     setIsClicked,
     currentUser,
 
     initialState,
-    setDeleteData,
-    deleteData,
+    setDeleteDataId,
   } = useStateContext();
 
-  const handleDelete = async () => {
-    const response = await StaffService.deleteStaff(
-      currentUser.organization,
-      deleteData.id
-    );
-
-    console.log(response);
-    setData(data.filter((staff) => staff._id !== deleteData.id));
-    setDeleteData({});
-    setIsClicked(initialState);
-  };
-
-  const handleCancelDelete = () => {
-    setDeleteData({});
+  const handleCancelDeleteModal = () => {
+    setDeleteDataId(null);
     setIsClicked(initialState);
   };
 
@@ -46,7 +33,7 @@ const DeleteDailog = ({ data, setData, type }) => {
           <button
             type="button"
             className="inline-block  w-full uppercase  hover:bg-black cursor-pointer text-white rounded-[10px] h-[40px] mt-3"
-            onClick={handleCancelDelete}
+            onClick={handleCancelDeleteModal}
             style={{ backgroundColor: '#C1C1C1' }}
           >
             CANCEL
@@ -55,7 +42,7 @@ const DeleteDailog = ({ data, setData, type }) => {
           <button
             type="button"
             className="inline-block  w-full uppercase  hover:bg-black cursor-pointer text-white rounded-[10px] h-[40px] mt-4"
-            onClick={handleDelete}
+            onClick={handleDeleteAction}
             style={{ backgroundColor: '#EF4444' }}
           >
             DELETE

@@ -2,8 +2,9 @@ import React from 'react';
 
 import { FiShoppingBag, FiUsers, FiTarget, FiEdit } from 'react-icons/fi';
 import { GrOverview } from 'react-icons/gr';
+import { FiCreditCard } from 'react-icons/fi';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
-import { BiTrash } from 'react-icons/bi';
+import { BiTrash, BiBarChartAlt2 } from 'react-icons/bi';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Avatar } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
@@ -62,7 +63,7 @@ export const links = [
       },
       {
         name: 'reports',
-        icon: <FiShoppingBag />,
+        icon: <BiBarChartAlt2 />,
       },
       {
         name: 'appraisals',
@@ -209,18 +210,21 @@ export const staffColumns = [
   {
     headerName: 'Staff',
     width: '200',
+    field: 'staff',
     // valueGetter: (params) => {
-    //   return `${params.row.first_name || ''} ${params.row.last_name || ''}`;
+    //   return `${params.row?.staff?.length}`;
     // },
 
     renderCell: (params) => (
       <div className="flex items-center space-x-2">
         <Avatar
-          text={`${params.row.first_name || ''} ${params.row.last_name || ''}`}
+          text={`${params?.row?.first_name || ''} ${
+            params?.row?.last_name || ''
+          }`}
         />
 
         <span>
-          {params.row.first_name || ''} {params.row.last_name || ''}
+          {params?.row?.first_name || ''} {params?.row?.last_name || ''}
         </span>
       </div>
     ),
@@ -240,6 +244,9 @@ export const staffColumns = [
     headerName: 'Department',
     width: '170',
     field: 'department',
+    valueGetter: (params) => {
+      return `${params?.row?.department?.name || ''}`;
+    },
   },
   {
     headerName: 'Birthday',
@@ -250,17 +257,27 @@ export const staffColumns = [
     field: 'actions',
     type: 'actions',
     width: 100,
-    getActions: () => {
-      const { handleClick } = useStateContext();
+    getActions: (params) => {
+      const { handleClick, setDeleteDataId, setEditDataId } = useStateContext();
+
+      const showStaffDialog = () => {
+        setEditDataId(params.row._id);
+        handleClick('staff');
+      };
+
+      const showConfirmDeleteModal = () => {
+        setDeleteDataId(params.row._id);
+        handleClick('delete');
+      };
 
       return [
         <GridActionsCellItem
-          onClick={() => handleClick('staff')}
+          onClick={showStaffDialog}
           icon={<FiEdit />}
           label="Edit"
         />,
         <GridActionsCellItem
-          onClick={() => handleClick('delete')}
+          onClick={showConfirmDeleteModal}
           icon={<BiTrash />}
           label="Delete"
         />,
@@ -289,13 +306,16 @@ export const departmentColumns = [
     field: 'staff',
     headerName: 'Staff',
     width: '220',
-    renderCell: (params) => (
-      <div className="flex -space-x-2 overflow-hidden p-2">
-        <Avatar text="Nless Ma" border={true} />
+    valueGetter: (params) => {
+      return `${params.row?.staff?.length}`;
+    },
+    // renderCell: (params) => (
+    //   <div className="flex -space-x-2 overflow-hidden p-2">
+    //     <Avatar text="Nless Ma" border={true} />
 
-        <Avatar text="Nless Ma" border={true} />
-      </div>
-    ),
+    //     <Avatar text="Nless Ma" border={true} />
+    //   </div>
+    // ),
   },
 
   {
@@ -303,9 +323,101 @@ export const departmentColumns = [
     headerName: 'Action',
     type: 'actions',
     width: 100,
-    getActions: () => [
-      <GridActionsCellItem icon={<FiEdit />} label="Edit" />,
-      <GridActionsCellItem icon={<BiTrash />} label="Delete" />,
-    ],
+    getActions: (params) => {
+      const { handleClick, setDeleteDataId, setEditDataId } = useStateContext();
+
+      const showDepartmentDialog = () => {
+        setEditDataId(params.row._id);
+        handleClick('department');
+      };
+
+      const showConfirmDeleteModal = () => {
+        setDeleteDataId(params.row._id);
+        handleClick('delete');
+      };
+
+      return [
+        <GridActionsCellItem
+          onClick={showDepartmentDialog}
+          icon={<FiEdit />}
+          label="Edit"
+        />,
+        <GridActionsCellItem
+          onClick={showConfirmDeleteModal}
+          icon={<BiTrash />}
+          label="Delete"
+        />,
+      ];
+    },
+  },
+];
+
+export const goalColumns = [
+  {
+    field: 'title',
+    headerMame: 'Goal',
+    width: '150',
+  },
+  {
+    headerName: 'Catogories',
+    width: '150',
+    // template: gridGoalTemplate,
+    field: 'category',
+  },
+
+  {
+    headerName: 'Due Date',
+    width: '120',
+    // template: gridGoalDueDate,
+    field: 'due_date',
+    type: 'Date',
+    format: 'dd/MM/yyyy',
+  },
+
+  {
+    headerName: 'Template',
+    width: '150',
+    // template: gridGoalTemplate,
+    field: 'template.name',
+  },
+
+  {
+    headerText: 'Status',
+    width: '120',
+    field: 'status',
+  },
+  {
+    headerText: 'Action',
+    width: '150',
+    getActions: (params) => {
+      return [
+        <GridActionsCellItem icon={<FiEdit />} label="Edit" />,
+        <GridActionsCellItem icon={<BiTrash />} label="Delete" />,
+      ];
+    },
+  },
+];
+
+export const userProfileData = [
+  {
+    icon: <BiBarChartAlt2 />,
+    title: 'My Profile',
+    desc: 'Account Settings',
+    iconColor: '#03C9D7',
+    iconBg: '#E5FAFB',
+  },
+  {
+    icon: <BiBarChartAlt2 />,
+    title: 'My Inbox',
+    desc: 'Messages & Emails',
+    iconColor: 'rgb(0, 194, 146)',
+    iconBg: 'rgb(235, 250, 242)',
+  },
+  {
+    icon: <BiBarChartAlt2 />,
+    title: 'My Tasks',
+    desc: 'To-do and Daily Tasks',
+    iconColor: 'rgb(255, 244, 229)',
+    iconBg: 'rgb(254, 201, 15)',
   },
 ];

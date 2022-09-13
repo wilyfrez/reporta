@@ -5,9 +5,8 @@ import { departmentColumns } from '../utils/data';
 import { useStateContext } from '../contexts/ContextProvider';
 import { validateDepartmentCreationForm } from '../utils/helpers';
 import DepartmentsService from '../services/DepartmentsService';
-import { UnAuthorize } from './';
 
-const Deparmtents = () => {
+const Reports = () => {
   const {
     currentColor,
     isClicked,
@@ -110,14 +109,10 @@ const Deparmtents = () => {
     }
   };
 
-  if (!currentUser.admin) {
-    return <UnAuthorize />;
-  }
-
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl wi">
       <div className="flex items-end justify-between mb-8">
-        <Header category="Page" title="Departments" />
+        <Header category="Page" title="Reports" />
         <button
           type="button"
           onClick={showStaffDialog}
@@ -151,4 +146,4 @@ const Deparmtents = () => {
   );
 };
 
-export default Deparmtents;
+export default Reports;

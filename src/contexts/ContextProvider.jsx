@@ -15,6 +15,7 @@ const initialState = {
   template: false,
   category: false,
   delete: false,
+  request: false,
 };
 
 export const ContextProvider = ({ children }) => {
@@ -27,8 +28,8 @@ export const ContextProvider = ({ children }) => {
   const [error, setError] = useState({});
   const [formData, setFormData] = useState({});
   const [uploadData, setUploadData] = useState({});
-  const [editData, setEditData] = useState({});
-  const [deleteData, setDeleteData] = useState({});
+  const [editDataId, setEditDataId] = useState(null);
+  const [deleteDataId, setDeleteDataId] = useState(null);
   const [downloadData, setDownloadData] = useState({});
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser);
 
@@ -98,10 +99,10 @@ export const ContextProvider = ({ children }) => {
         setUploadData,
         downloadData,
         setDownloadData,
-        editData,
-        setEditData,
-        deleteData,
-        setDeleteData,
+        editDataId,
+        setEditDataId,
+        deleteDataId,
+        setDeleteDataId,
       }}
     >
       {children}

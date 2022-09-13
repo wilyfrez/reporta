@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/data';
 
 class AuthService {
@@ -56,6 +57,7 @@ class AuthService {
 
   logout() {
     localStorage.removeItem('user');
+    navigate('/login');
   }
 
   getCurrentUser() {

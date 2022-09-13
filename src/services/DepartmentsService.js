@@ -18,6 +18,27 @@ class DepartmentsService {
     });
     return response.data;
   }
+
+  async deleteDepartment(departmentId) {
+    const response = await axios.delete(
+      `${API_URL}/departments/${departmentId}`,
+      {
+        headers: AuthHeader(),
+      }
+    );
+    return response.data;
+  }
+
+  async updateDepartment(departmentId, data) {
+    const response = await axios.put(
+      `${API_URL}/departments/${departmentId}`,
+      data,
+      {
+        headers: AuthHeader(),
+      }
+    );
+    return response.data;
+  }
 }
 
 export default new DepartmentsService();

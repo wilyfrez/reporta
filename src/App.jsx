@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Account } from './components';
+import { Account, AuthRoutes } from './components';
 import { ContextProvider } from './contexts/ContextProvider';
 import {
   Home,
@@ -24,7 +24,14 @@ const App = () => (
           element={<ActivationInstruction />}
         />
         <Route path="/activate/:token" element={<ActivateAccount />} />
-        <Route path="/account/*" element={<Account />} />
+        <Route
+          path="/account/*"
+          element={
+            <AuthRoutes>
+              <Account />
+            </AuthRoutes>
+          }
+        />
       </Routes>
     </BrowserRouter>
   </ContextProvider>

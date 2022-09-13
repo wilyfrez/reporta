@@ -8,7 +8,14 @@ import { FiSettings } from 'react-icons/fi';
 import { NavBar, Footer, SideBar, ThemeSettings } from './';
 
 import { useStateContext } from '../contexts/ContextProvider';
-import { Departments, Overview, Staff } from '../pages';
+import {
+  Departments,
+  Goals,
+  NotFound,
+  Overview,
+  Reports,
+  Staff,
+} from '../pages';
 import { PendingSubmissions } from './Tables';
 
 const Account = () => {
@@ -80,11 +87,14 @@ const Account = () => {
               <Route path="/categories" element={<Categories />} /> */}
 
               {/* submission */}
-              {/* <Route path="/goals" element={<Goals />} />
-              <Route path="/goals/:goalId" element={<GoalSpecific />} />
-
+              <Route path="/goals" element={<Goals />} />
               <Route path="/reports" element={<Reports />} />
-              <Route path="/appraisals" element={<Appraisals />} />
+
+              <Route path="/*" element={<NotFound />} />
+
+              {/* <Route path="/goals/:goalId" element={<GoalSpecific />} /> */}
+
+              {/*  <Route path="/appraisals" element={<Appraisals />} />
               <Route path="/citations" element={<Citations />} /> */}
 
               {/* apps  */}

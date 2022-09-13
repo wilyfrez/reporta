@@ -2,10 +2,17 @@ import { useState, useEffect } from 'react';
 import { useStateContext } from '../contexts/ContextProvider';
 import { MdOutlineCancel } from 'react-icons/md';
 import { Input } from './';
-import { Alert, Box, IconButton, Stack, TextField } from '@mui/material';
+import {
+  Alert,
+  Box,
+  IconButton,
+  Stack,
+  TextField,
+  MenuItem,
+} from '@mui/material';
 import DepartmentsService from '../services/DepartmentsService';
 
-const StaffDailog = ({ handleStaffAccountRegistration }) => {
+const StaffDailog = ({ staffData, handleStaffAccountRegistration }) => {
   const {
     currentUser,
     currentColor,
@@ -17,10 +24,17 @@ const StaffDailog = ({ handleStaffAccountRegistration }) => {
     setIsClicked,
     initialState,
     handleClick,
-    editData,
+    editDataId,
+    setEditDataId,
   } = useStateContext();
 
   const [departmentOptions, setDepartmentOptions] = useState([]);
+
+  useEffect(() => {
+    if (editDataId) {
+      setFormData(staffData.filter((staff) => staff._id === editDataId)[0]);
+    }
+  }, []);
 
   useEffect(() => {
     const createOptions = async () => {
@@ -31,8 +45,6 @@ const StaffDailog = ({ handleStaffAccountRegistration }) => {
         label: dept.name,
       }));
 
-      console.log('optionDAta', optionsData);
-
       setDepartmentOptions(optionsData);
     };
     createOptions();
@@ -40,6 +52,7 @@ const StaffDailog = ({ handleStaffAccountRegistration }) => {
 
   const handleSubmit = () => {
     handleStaffAccountRegistration();
+    // console.log(formData);
   };
 
   const handleChange = (event) => {
@@ -48,6 +61,7 @@ const StaffDailog = ({ handleStaffAccountRegistration }) => {
 
   const handleCloseDailog = () => {
     handleClick(initialState);
+    setEditDataId(null);
     setFormData({});
     setError({});
   };
@@ -57,21 +71,15 @@ const StaffDailog = ({ handleStaffAccountRegistration }) => {
     { value: 'Male', label: 'Male' },
   ];
 
+  // console.log(departmentOptions[0]?.label);
+
   return (
     <div className="bg-half-transparent w-full fixed h-screen nav-item top-0 right-0 ">
       <div className="float-right h-screen  duration-1000 ease-in-out dark:text-gray-200 transition-all dark:bg-[#484B52] bg-white md:w-400 p-8 md:hover:overflow-auto">
         <div className="flex justify-between items-center">
           <p className="font-semibold text-lg">
-            Add Staff
-            {/* {editData.id ? 'Update' : 'Add'} Employee */}
+            {editDataId ? 'Update' : 'Add'} Staff
           </p>
-          {/* <Button
-            icon={}
-            color="rgb(153, 171, 180)"
-            bgHoverColor="light-gray"
-            size="2xl"
-            // borderRadius="50%"
-          /> */}
 
           <IconButton
             onClick={handleCloseDailog}
@@ -158,12 +166,21 @@ const StaffDailog = ({ handleStaffAccountRegistration }) => {
           select
           label="Deparmtent"
           margin="normal"
-          onChange={handleChange}
+          onChange={(e) => handleFormInputChange(e, 'department')}
           SelectProps={{
             native: true,
           }}
         >
-          <option value=""></option>
+          {editDataId && formData?.department?._id ? (
+            <option
+              key={formData?.department?._id}
+              value={formData?.department?._id}
+            >
+              {formData?.department?.name}
+            </option>
+          ) : (
+            <option value=""></option>
+          )}
           {departmentOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -177,37 +194,35 @@ const StaffDailog = ({ handleStaffAccountRegistration }) => {
             id="gender"
             select
             label="Gender"
-            onChange={handleChange}
+            onChange={(e) => handleFormInputChange(e, 'gender')}
             SelectProps={{
               native: true,
             }}
           >
-            <option value=""></option>
+            {editDataId && formData?.gender ? (
+              <option key={formData?.gender} value={formData?.gender}>
+                {formData?.gender}
+              </option>
+            ) : (
+              <option value=""></option>
+            )}
             {genderOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
           </TextField>
-          {/* <TextField
+          <TextField
             fullWidth
-            variant="outlined"
-            label="Birthday"
             id="birthday"
+            label="Birthday"
+            type="date"
             value={formData?.birthday || ''}
             onChange={(e) => handleFormInputChange(e, 'birthday')}
-          /> */}
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Basic example"
-              value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
         </div>
 
         <TextField
@@ -227,7 +242,7 @@ const StaffDailog = ({ handleStaffAccountRegistration }) => {
             onClick={handleSubmit}
             style={{ backgroundColor: currentColor }}
           >
-            {editData.id ? 'Update' : 'Add Staff'}
+            {editDataId ? 'Update' : 'Add Staff'}
           </button>
         </div>
       </div>

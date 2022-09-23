@@ -7,6 +7,12 @@ import { validateStaffAccountRegistrationForm } from '../utils/helpers';
 import { StaffService } from '../services';
 import SelectTextFields from '../components/SelectTextFields';
 import { UnAuthorize } from './';
+import { Alert, Box, CircularProgress } from '@mui/material';
+import {
+  ColumnDirective,
+  ColumnsDirective,
+  GridComponent,
+} from '@syncfusion/ej2-react-grids';
 
 const Staff = () => {
   const {
@@ -14,8 +20,10 @@ const Staff = () => {
     isClicked,
     handleClick,
     currentUser,
+    editDataId,
     setEditData,
     formData,
+    error,
     setError,
     setformData,
     setIsClicked,
@@ -25,11 +33,23 @@ const Staff = () => {
   } = useStateContext();
 
   const [staffData, setStaffData] = useState([]);
+  const [loadingData, setLoadingDatea] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
     const getAllStaff = async () => {
-      const staff = await StaffService.getAllStaff();
-      setStaffData(staff);
+      const response = await StaffService.getAllStaff();
+      if (!response.status) {
+        setError({
+          severity: 'error',
+          message: response.message,
+        });
+        setLoadingDatea(false);
+        return;
+      }
+      setStaffData(response.staff);
+      setLoadingDatea(false);
+      setAuthorized(true);
     };
 
     getAllStaff();
@@ -56,6 +76,42 @@ const Staff = () => {
 
     setStaffData((preState) => [response.staff, ...preState]);
     setIsClicked(initialState);
+  };
+
+  const handleStaffAccountUpdate = async () => {
+    const validationResult = validateStaffAccountRegistrationForm(formData);
+    if (!validationResult.status) {
+      setError(validationResult);
+      return;
+    }
+
+    const response = await StaffService.updateStaffAccount(
+      editDataId,
+      formData
+    );
+    if (!response.status) {
+      setError({
+        status: response.status,
+        message: response.message,
+      });
+      return;
+    }
+
+    setStaffData(
+      staffData.map((staff) =>
+        staff._id === response.staff._id ? response.staff : staff
+      )
+    );
+    setIsClicked(initialState);
+  };
+
+  const handleStaffDialogFormSubmission = async () => {
+    if (editDataId) {
+      await handleStaffAccountUpdate();
+    } else {
+      await handleStaffAccountRegistration();
+    }
+    return;
   };
 
   const handleDeleteStaffAccount = async () => {
@@ -92,21 +148,38 @@ const Staff = () => {
         </button>
       </div>
 
-      <div className="flex h-[100%]">
-        <DataGrid
-          autoHeight
-          columns={staffColumns}
-          rows={staffData}
-          getRowId={(row) => row._id}
-        />
-      </div>
+      {error.message && (
+        <Alert
+          variant="outlined"
+          severity={error?.severity || 'error'}
+          sx={{ my: 1 }}
+        >
+          {error.message}
+        </Alert>
+      )}
 
-      {/* <SelectTextFields /> */}
+      {loadingData ? (
+        <div className="flex justify-center items-center space-x-2">
+          <CircularProgress /> <span>Loading ...</span>
+        </div>
+      ) : authorized ? (
+        <div className="flex h-[100%]">
+          <GridComponent dataSource={staffData} height={315}>
+            <ColumnsDirective>
+              {staffColumns.map((item, index) => (
+                <ColumnDirective key={index} {...item} />
+              ))}
+            </ColumnsDirective>
+          </GridComponent>
+        </div>
+      ) : (
+        ''
+      )}
 
       {isClicked.staff && (
         <StaffDailog
           staffData={staffData}
-          handleStaffAccountRegistration={handleStaffAccountRegistration}
+          handleFormSubmission={handleStaffDialogFormSubmission}
         />
       )}
 

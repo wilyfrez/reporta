@@ -11,11 +11,9 @@ class StaffService {
       const response = await axios.get(`${API_URL}/staff`, {
         headers: AuthHeader(),
       });
-      return response.data.staff;
+      return response.data;
     } catch (error) {
-      if (error.response.logout) {
-        AuthService.logout();
-      }
+      return error.response.data;
     }
   }
 
@@ -32,15 +30,15 @@ class StaffService {
     }
   }
 
-  async updateStaff(organizationId, data, staffId) {
-    const response = await axios.put(
-      `${API_URL}/${ORGANIZATION_PATH}/${organizationId}/${STAFF_PATH}/${staffId}`,
-      data,
-      {
+  async updateStaffAccount(staffId, data) {
+    try {
+      const response = await axios.put(`${API_URL}/staff/${staffId}`, data, {
         headers: AuthHeader(),
-      }
-    );
-    return response.data;
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async deleteStaffAccount(staffId) {

@@ -11,8 +11,9 @@ import {
   MenuItem,
 } from '@mui/material';
 import DepartmentsService from '../services/DepartmentsService';
+import { formatDateForInput } from '../utils/helpers';
 
-const StaffDailog = ({ staffData, handleStaffAccountRegistration }) => {
+const StaffDailog = ({ staffData, handleFormSubmission }) => {
   const {
     currentUser,
     currentColor,
@@ -51,8 +52,7 @@ const StaffDailog = ({ staffData, handleStaffAccountRegistration }) => {
   }, []);
 
   const handleSubmit = () => {
-    handleStaffAccountRegistration();
-    // console.log(formData);
+    handleFormSubmission();
   };
 
   const handleChange = (event) => {
@@ -72,6 +72,13 @@ const StaffDailog = ({ staffData, handleStaffAccountRegistration }) => {
   ];
 
   // console.log(departmentOptions[0]?.label);
+  console.log(formData);
+  const formatBday = () => {
+    if (formData?.birthday) {
+      return new Date(formData.birthday).toISOString().split('T')[0];
+    }
+    return '';
+  };
 
   return (
     <div className="bg-half-transparent w-full fixed h-screen nav-item top-0 right-0 ">
@@ -217,7 +224,7 @@ const StaffDailog = ({ staffData, handleStaffAccountRegistration }) => {
             id="birthday"
             label="Birthday"
             type="date"
-            value={formData?.birthday || ''}
+            value={formatBday()}
             onChange={(e) => handleFormInputChange(e, 'birthday')}
             InputLabelProps={{
               shrink: true,

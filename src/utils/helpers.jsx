@@ -1,5 +1,13 @@
 import { EMAIL_REGEX } from './data';
 
+export const formatDateForInput = () => {
+  if (birthday) {
+    console.log(birthday);
+    return new Date('2022-09-30T00:00:00.000Z').toISOString().split('T')[0];
+  }
+  return '';
+};
+
 export const getInitials = (fullname) => {
   let initials = fullname.split(' ');
 
@@ -142,3 +150,18 @@ export const validateDepartmentCreationForm = (formData) => {
   }
   return result;
 };
+
+export const getBirthday = (date) =>
+  date &&
+  `${date.getDate()} ${date.toLocaleString('default', {
+    month: 'short',
+  })}`;
+
+export const formatDate = (date) => (
+  <span>
+    {date &&
+      `${date.getDate()} ${date.toLocaleString('default', {
+        month: 'short',
+      })}, ${date.getFullYear()}`}
+  </span>
+);

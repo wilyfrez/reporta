@@ -6,6 +6,11 @@ import { useStateContext } from '../contexts/ContextProvider';
 import { validateDepartmentCreationForm } from '../utils/helpers';
 import DepartmentsService from '../services/DepartmentsService';
 import { UnAuthorize } from './';
+import {
+  ColumnDirective,
+  ColumnsDirective,
+  GridComponent,
+} from '@syncfusion/ej2-react-grids';
 
 const Deparmtents = () => {
   const {
@@ -129,12 +134,13 @@ const Deparmtents = () => {
       </div>
 
       <div className="flex h-[100%]">
-        <DataGrid
-          autoHeight
-          columns={departmentColumns}
-          rows={departmentData}
-          getRowId={(row) => row._id}
-        />
+        <GridComponent dataSource={departmentData} height={315}>
+          <ColumnsDirective>
+            {departmentColumns.map((item, index) => (
+              <ColumnDirective key={index} {...item} />
+            ))}
+          </ColumnsDirective>
+        </GridComponent>
       </div>
 
       {isClicked.department && (

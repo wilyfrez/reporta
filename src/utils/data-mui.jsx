@@ -162,21 +162,21 @@ export const colors = [
 export const pendingSubmissionsColumns = [
   {
     field: 'title',
-    headerText: 'Title',
+    headerName: 'Title',
     width: 150,
   },
   {
     field: 'type',
-    headerText: 'Type',
+    headerName: 'Type',
     width: 150,
   },
   {
     field: 'due_date',
-    headerText: 'Due Date',
+    headerName: 'Due Date',
     width: 150,
   },
   {
-    headerText: 'Action',
+    headerName: 'Action',
     width: 150,
   },
 ];
@@ -205,19 +205,27 @@ export const pendingSubmissionsRows = [
 export const staffColumns = [
   {
     field: 'staff_id',
-    headerText: 'Staff ID',
+    headerName: 'Staff ID',
     width: '100',
   },
   {
-    headerText: 'Staff',
+    headerName: 'Staff',
     width: '200',
     field: 'staff',
-    template: (props) => (
+    // valueGetter: (params) => {
+    //   return `${params.row?.staff?.length}`;
+    // },
+
+    renderCell: (params) => (
       <div className="flex items-center space-x-2">
-        <Avatar text={`${props?.first_name || ''} ${props?.last_name || ''}`} />
+        <Avatar
+          text={`${params?.row?.first_name || ''} ${
+            params?.row?.last_name || ''
+          }`}
+        />
 
         <span>
-          {props?.first_name || ''} {props?.last_name || ''}
+          {params?.row?.first_name || ''} {params?.row?.last_name || ''}
         </span>
       </div>
     ),
@@ -225,25 +233,28 @@ export const staffColumns = [
 
   {
     field: 'email',
-    headerText: 'Email',
+    headerName: 'Email',
     width: '200',
   },
   {
     field: 'phone',
-    headerText: 'Phone',
+    headerName: 'Phone',
     width: '150',
   },
   {
-    field: 'department.name',
-    headerText: 'Department',
+    headerName: 'Department',
     width: '150',
+    field: 'department',
+    valueGetter: (params) => {
+      return `${params?.row?.department?.name || ''}`;
+    },
   },
   {
-    headerText: 'Birthday',
-    width: '120',
+    headerName: 'Birthday',
+    width: '80',
     field: 'birthday',
-    valueAccessor: (field, data, column) => {
-      const date = data[field] && new Date(data[field]);
+    valueGetter: (params) => {
+      const date = params?.row?.birthday && new Date(params?.row?.birthday);
       return getBirthday(date);
     },
   },
@@ -251,28 +262,26 @@ export const staffColumns = [
     field: 'actions',
     type: 'actions',
     width: 100,
-    template: (props) => {
+    getActions: (params) => {
       const { handleClick, setDeleteDataId, setEditDataId } = useStateContext();
 
       const showStaffDialog = () => {
-        setEditDataId(props._id);
+        setEditDataId(params.row._id);
         handleClick('staff');
       };
 
       const showConfirmDeleteModal = () => {
-        setDeleteDataId(props._id);
+        setDeleteDataId(params.row._id);
         handleClick('delete');
       };
 
       return [
         <GridActionsCellItem
-          key="Edit"
           onClick={showStaffDialog}
           icon={<FiEdit />}
           label="Edit"
         />,
         <GridActionsCellItem
-          key="Delete"
           onClick={showConfirmDeleteModal}
           icon={<BiTrash />}
           label="Delete"
@@ -285,58 +294,60 @@ export const staffColumns = [
 export const departmentColumns = [
   {
     field: 'name',
-    headerText: 'Name',
+    headerName: 'Name',
     width: '220',
   },
   {
     field: 'hod',
-    headerText: 'Head of Department',
+    headerName: 'Head of Department',
     width: '220',
-    valueAccessor: (field, data, column) => {
-      return `${data[field]?.first_name} ${data[field]?.last_name}`;
+    valueGetter: (params) => {
+      return `${params.row?.hod?.first_name || ''} ${
+        params.row?.hod?.last_name || ''
+      }`;
     },
-    // valueGetter: (params) => {
-    //   return `${params.row?.hod?.first_name || ''} ${
-    //     params.row?.hod?.last_name || ''
-    //   }`;
-    // },
   },
   {
     field: 'staff',
-    headerText: 'Staff',
+    headerName: 'Staff',
     width: '220',
-    valueAccessor: (field, data, column) => {
-      return data[field]?.length;
+    valueGetter: (params) => {
+      return `${params.row?.staff?.length}`;
     },
+    // renderCell: (params) => (
+    //   <div className="flex -space-x-2 overflow-hidden p-2">
+    //     <Avatar text="Nless Ma" border={true} />
+
+    //     <Avatar text="Nless Ma" border={true} />
+    //   </div>
+    // ),
   },
 
   {
     field: 'actions',
-    headerText: 'Action',
+    headerName: 'Action',
     type: 'actions',
     width: 100,
-    template: (props) => {
+    getActions: (params) => {
       const { handleClick, setDeleteDataId, setEditDataId } = useStateContext();
 
       const showDepartmentDialog = () => {
-        setEditDataId(props._id);
+        setEditDataId(params.row._id);
         handleClick('department');
       };
 
       const showConfirmDeleteModal = () => {
-        setDeleteDataId(props._id);
+        setDeleteDataId(params.row._id);
         handleClick('delete');
       };
 
       return [
         <GridActionsCellItem
-          key="edit"
           onClick={showDepartmentDialog}
           icon={<FiEdit />}
           label="Edit"
         />,
         <GridActionsCellItem
-          key="delete"
           onClick={showConfirmDeleteModal}
           icon={<BiTrash />}
           label="Delete"
@@ -353,14 +364,14 @@ export const goalColumns = [
     width: '150',
   },
   {
-    headerText: 'Catogories',
+    headerName: 'Catogories',
     width: '150',
     // template: gridGoalTemplate,
     field: 'category',
   },
 
   {
-    headerText: 'Due Date',
+    headerName: 'Due Date',
     width: '120',
     // template: gridGoalDueDate,
     field: 'due_date',
@@ -369,7 +380,7 @@ export const goalColumns = [
   },
 
   {
-    headerText: 'Template',
+    headerName: 'Template',
     width: '150',
     // template: gridGoalTemplate,
     field: 'template.name',

@@ -6,17 +6,25 @@ import { API_URL, PATHS } from '../utils/data';
 
 class GoalsService {
   async getOganizationGoals() {
-    const response = await axios.get(`${API_URL}/goals`, {
-      headers: AuthHeader(),
-    });
-    return response.data;
+    try {
+      const response = await axios.get(`${API_URL}/goals`, {
+        headers: AuthHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 
   async requestGoal(data) {
-    const response = await axios.post(`${API_URL}/goals`, data, {
-      headers: AuthHeader(),
-    });
-    return response.data;
+    try {
+      const response = await axios.post(`${API_URL}/goals`, data, {
+        headers: AuthHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 
   async getStaffGoalsByGoalId(organizationId, goalId) {
@@ -45,6 +53,17 @@ class GoalsService {
       }
     );
     return response.data;
+  }
+
+  async deleteGoal(goalId) {
+    try {
+      const response = await axios.delete(`${API_URL}/goals/${goalId}`, {
+        headers: AuthHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 
   async downloadStaffGoal(organizationId, staffGoalId) {

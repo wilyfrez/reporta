@@ -44,14 +44,14 @@ export const links = [
         name: 'departments',
         icon: <HiOutlineOfficeBuilding />,
       },
-      {
-        name: 'templates',
-        icon: <FiShoppingBag />,
-      },
-      {
-        name: 'categories',
-        icon: <FiShoppingBag />,
-      },
+      // {
+      //   name: 'templates',
+      //   icon: <FiShoppingBag />,
+      // },
+      // {
+      //   name: 'categories',
+      //   icon: <FiShoppingBag />,
+      // },
     ],
   },
 
@@ -349,30 +349,21 @@ export const departmentColumns = [
 export const goalColumns = [
   {
     field: 'title',
-    headerMame: 'Goal',
+    headerText: 'Title',
     width: '150',
   },
   {
     headerText: 'Catogories',
     width: '150',
-    // template: gridGoalTemplate,
     field: 'category',
   },
 
   {
     headerText: 'Due Date',
     width: '120',
-    // template: gridGoalDueDate,
     field: 'due_date',
     type: 'Date',
     format: 'dd/MM/yyyy',
-  },
-
-  {
-    headerText: 'Template',
-    width: '150',
-    // template: gridGoalTemplate,
-    field: 'template.name',
   },
 
   {
@@ -382,11 +373,34 @@ export const goalColumns = [
   },
   {
     headerText: 'Action',
-    width: '150',
-    getActions: (params) => {
+    type: 'actions',
+    width: 100,
+    template: (props) => {
+      const { handleClick, setDeleteDataId, setEditDataId } = useStateContext();
+
+      const showDepartmentDialog = () => {
+        setEditDataId(props._id);
+        handleClick('request');
+      };
+
+      const showConfirmDeleteModal = () => {
+        setDeleteDataId(props._id);
+        handleClick('delete');
+      };
+
       return [
-        <GridActionsCellItem icon={<FiEdit />} label="Edit" />,
-        <GridActionsCellItem icon={<BiTrash />} label="Delete" />,
+        <GridActionsCellItem
+          key="edit"
+          onClick={showDepartmentDialog}
+          icon={<FiEdit />}
+          label="Edit"
+        />,
+        <GridActionsCellItem
+          key="delete"
+          onClick={showConfirmDeleteModal}
+          icon={<BiTrash />}
+          label="Delete"
+        />,
       ];
     },
   },

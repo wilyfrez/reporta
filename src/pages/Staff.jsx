@@ -106,6 +106,7 @@ const Staff = () => {
     }
     setIsClicked(initialState);
     setEditDataId(null);
+    setformData({});
   };
 
   const handleDeleteStaffAccount = async () => {

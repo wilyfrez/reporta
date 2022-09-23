@@ -13,8 +13,9 @@ import {
   TextField,
 } from '@mui/material';
 import { StaffService } from '../services';
+import { formatDateForInput } from '../utils/helpers';
 
-const RequestDailog = ({ departmentData, handleDepartmentAction }) => {
+const RequestDailog = ({ requestData, handleFormSubmission }) => {
   const {
     currentUser,
     currentColor,
@@ -31,7 +32,7 @@ const RequestDailog = ({ departmentData, handleDepartmentAction }) => {
   } = useStateContext();
 
   const handleSubmit = () => {
-    // console.log(formData);
+    handleFormSubmission();
   };
 
   const handleCloseDailog = () => {
@@ -75,14 +76,14 @@ const RequestDailog = ({ departmentData, handleDepartmentAction }) => {
         )}
 
         <TextField
-          error={error.message && !formData?.name ? true : false}
+          error={error.message && !formData?.title ? true : false}
           fullWidth
           variant="outlined"
           label="Goal title"
           id="title"
           margin="normal"
           helperText={error.message && 'Required'}
-          value={formData?.name || ''}
+          value={formData?.title || ''}
           required
           onChange={(e) => handleFormInputChange(e, 'title')}
         />
@@ -100,12 +101,18 @@ const RequestDailog = ({ departmentData, handleDepartmentAction }) => {
             native: true,
           }}
         >
-          <option value=""></option>
+          {editDataId && formData?.category ? (
+            <option key={formData?.category} value={formData?.category}>
+              {formData?.category}
+            </option>
+          ) : (
+            <option value=""></option>
+          )}
           {cateroryOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
-          ))}{' '}
+          ))}
         </TextField>
 
         <TextField
@@ -114,7 +121,7 @@ const RequestDailog = ({ departmentData, handleDepartmentAction }) => {
           label="Due Date"
           type="date"
           margin="normal"
-          value={formData?.birthday || ''}
+          value={formatDateForInput(formData?.due_date)}
           onChange={(e) => handleFormInputChange(e, 'due_date')}
           InputLabelProps={{
             shrink: true,
@@ -128,7 +135,7 @@ const RequestDailog = ({ departmentData, handleDepartmentAction }) => {
             onClick={handleSubmit}
             style={{ backgroundColor: currentColor }}
           >
-            {editDataId ? 'Update' : 'Add Deparment'}
+            {editDataId ? 'Update' : 'Send Request'}
           </button>
         </div>
       </div>

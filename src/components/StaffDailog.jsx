@@ -71,9 +71,7 @@ const StaffDailog = ({ staffData, handleFormSubmission }) => {
     { value: 'Male', label: 'Male' },
   ];
 
-  // console.log(departmentOptions[0]?.label);
-  console.log(formData);
-  const formatBday = () => {
+  const formatInputDate = () => {
     if (formData?.birthday) {
       return new Date(formData.birthday).toISOString().split('T')[0];
     }
@@ -224,7 +222,7 @@ const StaffDailog = ({ staffData, handleFormSubmission }) => {
             id="birthday"
             label="Birthday"
             type="date"
-            value={formatBday()}
+            value={formatDateForInput(formData?.birthday)}
             onChange={(e) => handleFormInputChange(e, 'birthday')}
             InputLabelProps={{
               shrink: true,

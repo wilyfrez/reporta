@@ -1,9 +1,8 @@
 import { EMAIL_REGEX } from './data';
 
-export const formatDateForInput = () => {
-  if (birthday) {
-    console.log(birthday);
-    return new Date('2022-09-30T00:00:00.000Z').toISOString().split('T')[0];
+export const formatDateForInput = (date) => {
+  if (date) {
+    return new Date(date).toISOString().split('T')[0];
   }
   return '';
 };
@@ -138,6 +137,27 @@ export const validateDepartmentCreationForm = (formData) => {
   };
 
   if (!name) {
+    result = {
+      status: false,
+      message: 'Complete all required field.',
+    };
+  } else {
+    result = {
+      status: true,
+      message: 'Validation passed',
+    };
+  }
+  return result;
+};
+
+export const validateRequestCreationForm = (formData) => {
+  const { title } = formData;
+  let result = {
+    status: false,
+    message: 'Oops! Form validation failed.',
+  };
+
+  if (!title) {
     result = {
       status: false,
       message: 'Complete all required field.',

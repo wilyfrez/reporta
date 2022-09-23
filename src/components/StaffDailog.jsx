@@ -171,7 +171,7 @@ const StaffDailog = ({ staffData, handleFormSubmission }) => {
           fullWidth
           id="department"
           select
-          label="Deparmtent"
+          label="Department"
           margin="normal"
           onChange={(e) => handleFormInputChange(e, 'department')}
           SelectProps={{

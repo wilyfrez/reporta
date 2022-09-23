@@ -60,11 +60,6 @@ const Staff = () => {
   };
 
   const handleStaffAccountRegistration = async () => {
-    const validationResult = validateStaffAccountRegistrationForm(formData);
-    if (!validationResult.status) {
-      setError(validationResult);
-      return;
-    }
     const response = await StaffService.registerStaffAccount(formData);
     if (!response.status) {
       setError({
@@ -75,16 +70,9 @@ const Staff = () => {
     }
 
     setStaffData((preState) => [response.staff, ...preState]);
-    setIsClicked(initialState);
   };
 
   const handleStaffAccountUpdate = async () => {
-    const validationResult = validateStaffAccountRegistrationForm(formData);
-    if (!validationResult.status) {
-      setError(validationResult);
-      return;
-    }
-
     const response = await StaffService.updateStaffAccount(
       editDataId,
       formData
@@ -102,16 +90,22 @@ const Staff = () => {
         staff._id === response.staff._id ? response.staff : staff
       )
     );
-    setIsClicked(initialState);
   };
 
   const handleStaffDialogFormSubmission = async () => {
+    const validationResult = validateStaffAccountRegistrationForm(formData);
+    if (!validationResult.status) {
+      setError(validationResult);
+      return;
+    }
+
     if (editDataId) {
       await handleStaffAccountUpdate();
     } else {
       await handleStaffAccountRegistration();
     }
-    return;
+    setIsClicked(initialState);
+    setEditDataId(null);
   };
 
   const handleDeleteStaffAccount = async () => {
@@ -164,7 +158,7 @@ const Staff = () => {
         </div>
       ) : authorized ? (
         <div className="flex h-[100%]">
-          <GridComponent dataSource={staffData} height={315}>
+          <GridComponent dataSource={staffData}>
             <ColumnsDirective>
               {staffColumns.map((item, index) => (
                 <ColumnDirective key={index} {...item} />

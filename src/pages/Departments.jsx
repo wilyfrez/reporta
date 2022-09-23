@@ -11,6 +11,7 @@ import {
   ColumnsDirective,
   GridComponent,
 } from '@syncfusion/ej2-react-grids';
+import { Alert, CircularProgress } from '@mui/material';
 
 const Deparmtents = () => {
   const {
@@ -19,8 +20,9 @@ const Deparmtents = () => {
     handleClick,
     currentUser,
     editDataId,
-    setEditDataId,
+    setEditData,
     formData,
+    error,
     setError,
     setformData,
     setIsClicked,
@@ -30,12 +32,23 @@ const Deparmtents = () => {
   } = useStateContext();
 
   const [departmentData, setDepartmentData] = useState([]);
+  const [loadingData, setLoadingDatea] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
     const getAllDepartments = async () => {
-      const departments = await DepartmentsService.getAllDepartments();
-      console.log(departments);
-      setDepartmentData(departments);
+      const response = await DepartmentsService.getAllDepartments();
+      if (!response.status) {
+        setError({
+          severity: 'error',
+          message: response.message,
+        });
+        setLoadingDatea(false);
+        return;
+      }
+      setDepartmentData(response.departments);
+      setLoadingDatea(false);
+      setAuthorized(true);
     };
 
     getAllDepartments();
@@ -46,6 +59,11 @@ const Deparmtents = () => {
   };
 
   const createDepartment = async () => {
+    const validationResult = validateDepartmentCreationForm(formData);
+    if (!validationResult.status) {
+      setError(validationResult);
+      return;
+    }
     const response = await DepartmentsService.createDepartment(formData);
     if (!response.status) {
       setError({
@@ -56,10 +74,10 @@ const Deparmtents = () => {
     }
 
     setDepartmentData((preState) => [response.department, ...preState]);
+    setIsClicked(initialState);
   };
 
   const updateDepartment = async () => {
-    console.log('update ongoing', editDataId);
     const response = await DepartmentsService.updateDepartment(
       editDataId,
       formData
@@ -82,7 +100,7 @@ const Deparmtents = () => {
     );
   };
 
-  const handleDepartmentAction = async () => {
+  const handleDepartmentDialogFormSubmission = async () => {
     const validationResult = validateDepartmentCreationForm(formData);
     if (!validationResult.status) {
       setError(validationResult);
@@ -133,19 +151,38 @@ const Deparmtents = () => {
         </button>
       </div>
 
-      <div className="flex h-[100%]">
-        <GridComponent dataSource={departmentData} height={315}>
-          <ColumnsDirective>
-            {departmentColumns.map((item, index) => (
-              <ColumnDirective key={index} {...item} />
-            ))}
-          </ColumnsDirective>
-        </GridComponent>
-      </div>
+      {error.message && (
+        <Alert
+          variant="outlined"
+          severity={error?.severity || 'error'}
+          sx={{ my: 1 }}
+        >
+          {error.message}
+        </Alert>
+      )}
+
+      {loadingData ? (
+        <div className="flex justify-center items-center space-x-2">
+          <CircularProgress />
+          <span>Loading ...</span>
+        </div>
+      ) : authorized ? (
+        <div className=" ">
+          <GridComponent dataSource={departmentData}>
+            <ColumnsDirective>
+              {departmentColumns.map((item, index) => (
+                <ColumnDirective key={index} {...item} />
+              ))}
+            </ColumnsDirective>
+          </GridComponent>
+        </div>
+      ) : (
+        ''
+      )}
 
       {isClicked.department && (
         <DepartmentDailog
-          handleDepartmentAction={handleDepartmentAction}
+          handleFormSubmission={handleDepartmentDialogFormSubmission}
           departmentData={departmentData}
         />
       )}

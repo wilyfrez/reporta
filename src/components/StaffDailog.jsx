@@ -39,7 +39,7 @@ const StaffDailog = ({ staffData, handleFormSubmission }) => {
 
   useEffect(() => {
     const createOptions = async () => {
-      const departments = await DepartmentsService.getAllDepartments();
+      const { departments } = await DepartmentsService.getAllDepartments();
 
       const optionsData = departments.map((dept) => ({
         value: dept._id,

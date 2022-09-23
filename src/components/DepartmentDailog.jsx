@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { StaffService } from '../services';
 
-const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
+const DepartmentDailog = ({ departmentData, handleFormSubmission }) => {
   const {
     currentUser,
     currentColor,
@@ -44,7 +44,7 @@ const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
 
   useEffect(() => {
     const createOptions = async () => {
-      const allStaff = await StaffService.getAllStaff();
+      const { staff: allStaff } = await StaffService.getAllStaff();
 
       const optionsData = allStaff.map((staff) => ({
         value: staff._id,
@@ -61,7 +61,7 @@ const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
   };
 
   const handleSubmit = () => {
-    handleDepartmentAction();
+    handleFormSubmission();
   };
 
   const handleCloseDailog = () => {
@@ -122,7 +122,13 @@ const DepartmentDailog = ({ departmentData, handleDepartmentAction }) => {
             native: true,
           }}
         >
-          <option value=""></option>
+          {editDataId && formData?.hod?._id ? (
+            <option key={formData?.hod?._id} value={formData?.hod?._id}>
+              {`${formData?.hod?.first_name} ${formData?.hod?.last_name}  `}
+            </option>
+          ) : (
+            <option value=""></option>
+          )}
           {staffOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}

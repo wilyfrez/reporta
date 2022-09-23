@@ -293,7 +293,7 @@ export const departmentColumns = [
     headerText: 'Head of Department',
     width: '220',
     valueAccessor: (field, data, column) => {
-      return `${data[field]?.first_name} ${data[field]?.last_name}`;
+      return `${data[field]?.first_name || ''} ${data[field]?.last_name || ''}`;
     },
     // valueGetter: (params) => {
     //   return `${params.row?.hod?.first_name || ''} ${

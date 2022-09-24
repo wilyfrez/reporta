@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DeleteDailog, RequestDailog, Header } from '../components';
-import { goalColumns, staffGoalColumns } from '../utils/data';
+import { goalSpecificColumns } from '../utils/data';
 import { useStateContext } from '../contexts/ContextProvider';
 import {
   ColumnDirective,
@@ -10,9 +10,9 @@ import {
 import { Alert, CircularProgress } from '@mui/material';
 import GoalsService from '../services/GoalsService';
 import { validateRequestCreationForm } from '../utils/helpers';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-const Goals = () => {
+const GoalSpecific = () => {
   const {
     currentColor,
     isClicked,
@@ -33,44 +33,28 @@ const Goals = () => {
   const [goalData, setGoalData] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
   const [authorized, setAuthorized] = useState(false);
+  const [goalTitle, setgoalTitle] = useState('');
 
-  const navigate = useNavigate();
+  const { goalId } = useParams();
 
   useEffect(() => {
-    const getOrganizationStaff = async () => {
-      const response = await GoalsService.getOrganizationGoals();
+    const getStaffGoalsByGoalId = async () => {
+      const response = await GoalsService.getStaffGoalsByGoalId(goalId);
       if (!response.status) {
         setError({
           severity: 'error',
           message: response.message,
         });
-        setLoadingData(false);
+        setLoadingDatea(false);
         return;
       }
-      setGoalData(response.goals);
+      setgoalTitle(response.title);
+      setGoalData(response.staffGoals);
       setLoadingData(false);
       setAuthorized(true);
     };
 
-    const getStaffGoal = async () => {
-      const response = await GoalsService.getStaffGoals();
-      if (!response.status) {
-        setError({
-          severity: 'error',
-          message: response.message,
-        });
-        setLoadingData(false);
-        return;
-      }
-      setGoalData(response.goals);
-      setLoadingData(false);
-    };
-
-    if (currentUser.admin) {
-      getOrganizationStaff();
-    } else {
-      getStaffGoal();
-    }
+    getStaffGoalsByGoalId();
   }, []);
 
   const showStaffDialog = () => {
@@ -124,9 +108,9 @@ const Goals = () => {
     setFormData({});
   };
 
-  const handleDeleteGoal = async () => {
+  const handleDeleteStaffGoal = async () => {
     if (!deleteDataId) return;
-    const response = await GoalsService.deleteGoal(deleteDataId);
+    const response = await GoalsService.deleteStaffGoal(deleteDataId);
 
     if (response.status) {
       setGoalData(goalData.filter((goal) => goal._id !== deleteDataId));
@@ -137,27 +121,10 @@ const Goals = () => {
     }
   };
 
-  const recordClick = (args) => {
-    const { rowData, column } = args;
-    if (column.headerText == 'Action') return;
-    navigate(rowData._id);
-  };
-
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl wi">
       <div className="flex items-end justify-between mb-8">
-        <Header category="Page" title="Goals" />
-
-        {authorized && (
-          <button
-            type="button"
-            onClick={showStaffDialog}
-            style={{ backgroundColor: currentColor }}
-            className="text-sm text-white p-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md"
-          >
-            Request Goal
-          </button>
-        )}
+        {loadingData ? '' : <Header category="Page" title={goalTitle} />}
       </div>
 
       {error.message && (
@@ -170,54 +137,29 @@ const Goals = () => {
         </Alert>
       )}
 
-      {/* if user is admin */}
-      {currentUser.admin ? (
-        loadingData ? (
-          <div className="flex justify-center items-center space-x-2">
-            <CircularProgress /> <span>Loading ...</span>
-          </div>
-        ) : authorized ? (
-          <div className="flex h-[100%]">
-            <GridComponent dataSource={goalData} recordClick={recordClick}>
-              <ColumnsDirective>
-                {goalColumns.map((item, index) => (
-                  <ColumnDirective key={index} {...item} />
-                ))}
-              </ColumnsDirective>
-            </GridComponent>
-          </div>
-        ) : (
-          ''
-        )
-      ) : // if user is not addmin
-      loadingData ? (
+      {loadingData ? (
         <div className="flex justify-center items-center space-x-2">
           <CircularProgress /> <span>Loading ...</span>
         </div>
-      ) : (
+      ) : authorized ? (
         <div className="flex h-[100%]">
           <GridComponent dataSource={goalData}>
             <ColumnsDirective>
-              {staffGoalColumns.map((item, index) => (
+              {goalSpecificColumns.map((item, index) => (
                 <ColumnDirective key={index} {...item} />
               ))}
             </ColumnsDirective>
           </GridComponent>
         </div>
+      ) : (
+        ''
       )}
 
-      {authorized && isClicked.request && (
-        <RequestDailog
-          requestData={goalData}
-          handleFormSubmission={handleRequestDialogFormSubmission}
-        />
-      )}
-
-      {authorized && isClicked.delete && (
-        <DeleteDailog handleDeleteAction={handleDeleteGoal} />
+      {isClicked.delete && (
+        <DeleteDailog handleDeleteAction={handleDeleteStaffGoal} />
       )}
     </div>
   );
 };
 
-export default Goals;
+export default GoalSpecific;

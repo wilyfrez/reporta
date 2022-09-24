@@ -11,6 +11,7 @@ import { useStateContext } from '../contexts/ContextProvider';
 import {
   Departments,
   Goals,
+  GoalSpecific,
   NotFound,
   Overview,
   Reports,
@@ -88,11 +89,11 @@ const Account = () => {
 
               {/* submission */}
               <Route path="/goals" element={<Goals />} />
+              <Route path="/goals/:goalId" element={<GoalSpecific />} />
+
               <Route path="/reports" element={<Reports />} />
 
               <Route path="/*" element={<NotFound />} />
-
-              {/* <Route path="/goals/:goalId" element={<GoalSpecific />} /> */}
 
               {/*  <Route path="/appraisals" element={<Appraisals />} />
               <Route path="/citations" element={<Citations />} /> */}

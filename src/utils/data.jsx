@@ -9,6 +9,7 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import { Avatar } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
 import { getBirthday } from './helpers';
+import { Button, ButtonGroup } from '@mui/material';
 
 export const API_URL = import.meta.env.VITE_API_URL;
 
@@ -401,6 +402,128 @@ export const goalColumns = [
           icon={<BiTrash />}
           label="Delete"
         />,
+      ];
+    },
+  },
+];
+
+export const goalSpecificColumns = [
+  {
+    headerText: 'Staff',
+    width: '150',
+    template: (props) => (
+      <div className="flex items-center space-x-2">
+        <Avatar
+          text={`${props.staff?.first_name || ''} ${
+            props.staff?.last_name || ''
+          }`}
+        />
+
+        <span>
+          {props.staff?.first_name || ''} {props.staff?.last_name || ''}
+        </span>
+      </div>
+    ),
+  },
+
+  {
+    headerText: 'Status',
+    width: '120',
+    field: 'status',
+  },
+  {
+    headerText: 'Action',
+    type: 'actions',
+    width: 100,
+    template: (props) => {
+      const { handleClick, setDeleteDataId } = useStateContext();
+
+      const showConfirmDeleteModal = () => {
+        setDeleteDataId(props._id);
+        handleClick('delete');
+      };
+
+      return [
+        <GridActionsCellItem
+          key="delete"
+          onClick={showConfirmDeleteModal}
+          icon={<BiTrash />}
+          label="Delete"
+        />,
+      ];
+    },
+  },
+];
+
+export const staffGoalColumns = [
+  {
+    field: 'goal.title',
+    headerText: 'Title',
+    width: '150',
+  },
+  {
+    headerText: 'Catogory',
+    width: '150',
+    field: 'goal.category',
+  },
+
+  {
+    headerText: 'Due Date',
+    width: '120',
+    field: 'goal.due_date',
+    type: 'Date',
+    format: 'dd/MM/yyyy',
+  },
+
+  {
+    headerText: 'Status',
+    width: '120',
+    field: 'status',
+  },
+  {
+    headerText: 'Action',
+    type: 'actions',
+    width: 200,
+    template: (props) => {
+      const { handleClick, setDeleteDataId, setEditDataId } = useStateContext();
+
+      const handleUpload = () => {
+        alert('Uploading');
+      };
+
+      const handleDownload = () => {
+        alert('Downloading');
+      };
+      const handleView = () => {
+        alert('Viewing');
+      };
+
+      const showConfirmDeleteModal = () => {
+        setDeleteDataId(props._id);
+        handleClick('delete');
+      };
+
+      return [
+        <ButtonGroup variant="text" aria-label="text button group">
+          <Button
+            sx={{ py: 0, fontSize: '11px', color: '#03C9D7' }}
+            onClick={handleUpload}
+          >
+            Upload
+          </Button>
+          <Button
+            sx={{ py: 0, fontSize: '11px', color: '#FB9678' }}
+            onClick={handleDownload}
+          >
+            Download
+          </Button>
+          <Button
+            sx={{ py: 0, fontSize: '11px', color: '#1A97F5' }}
+            onClick={handleView}
+          >
+            View
+          </Button>
+        </ButtonGroup>,
       ];
     },
   },

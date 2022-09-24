@@ -31,6 +31,12 @@ const RequestDailog = ({ requestData, handleFormSubmission }) => {
     setEditDataId,
   } = useStateContext();
 
+  useEffect(() => {
+    if (editDataId) {
+      setFormData(requestData.filter((data) => data._id === editDataId)[0]);
+    }
+  }, []);
+
   const handleSubmit = () => {
     handleFormSubmission();
   };
@@ -46,7 +52,8 @@ const RequestDailog = ({ requestData, handleFormSubmission }) => {
     { value: 'Daily', label: 'Daily' },
     { value: 'Weekly', label: 'Weekly' },
     { value: 'Monthly', label: 'Monthly' },
-    { value: 'Halfly', label: 'Halfly' },
+    { value: 'Quarterly', label: 'Quarterly' },
+    { value: 'Half Yearly', label: 'Half Yearly' },
   ];
 
   return (
@@ -94,7 +101,6 @@ const RequestDailog = ({ requestData, handleFormSubmission }) => {
           variant="outlined"
           select
           label="Category"
-          defaultValue=""
           margin="normal"
           onChange={(e) => handleFormInputChange(e, 'category')}
           SelectProps={{

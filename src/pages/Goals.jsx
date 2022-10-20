@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { DeleteDailog, RequestDailog, Header } from '../components';
+import {
+  DeleteDailog,
+  RequestDailog,
+  Header,
+  UploadDialog,
+} from '../components';
 import { goalColumns, staffGoalColumns } from '../utils/data';
 import { useStateContext } from '../contexts/ContextProvider';
 import {
@@ -8,7 +13,7 @@ import {
   GridComponent,
 } from '@syncfusion/ej2-react-grids';
 import { Alert, CircularProgress } from '@mui/material';
-import GoalsService from '../services/GoalsService';
+import { GoalsService } from '../services';
 import { validateRequestCreationForm } from '../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,7 +42,7 @@ const Goals = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getOrganizationStaff = async () => {
+    const getOrganizationGoals = async () => {
       const response = await GoalsService.getOrganizationGoals();
       if (!response.status) {
         setError({
@@ -67,7 +72,7 @@ const Goals = () => {
     };
 
     if (currentUser.admin) {
-      getOrganizationStaff();
+      getOrganizationGoals();
     } else {
       getStaffGoal();
     }
@@ -208,6 +213,7 @@ const Goals = () => {
 
       {authorized && isClicked.request && (
         <RequestDailog
+          type="Goal"
           requestData={goalData}
           handleFormSubmission={handleRequestDialogFormSubmission}
         />
@@ -216,6 +222,8 @@ const Goals = () => {
       {authorized && isClicked.delete && (
         <DeleteDailog handleDeleteAction={handleDeleteGoal} />
       )}
+
+      {isClicked.upload && <UploadDialog />}
     </div>
   );
 };

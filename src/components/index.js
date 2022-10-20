@@ -12,3 +12,5 @@ export { default as StaffDailog } from './StaffDailog';
 export { default as DepartmentDailog } from './DepartmentDailog';
 export { default as DeleteDailog } from './DeleteDailog';
 export { default as RequestDailog } from './RequestDailog';
+export { default as Upload } from './Upload';
+export { default as UploadDialog } from './UploadDialog';

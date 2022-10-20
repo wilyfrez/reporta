@@ -1,10 +1,21 @@
 import { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { DeleteDailog, DepartmentDailog, Header } from '../components';
-import { departmentColumns } from '../utils/data';
+import {
+  DeleteDailog,
+  RequestDailog,
+  Header,
+  UploadDialog,
+} from '../components';
+import { reportColumns, staffReportColumns } from '../utils/data';
 import { useStateContext } from '../contexts/ContextProvider';
-import { validateDepartmentCreationForm } from '../utils/helpers';
-import DepartmentsService from '../services/DepartmentsService';
+import {
+  ColumnDirective,
+  ColumnsDirective,
+  GridComponent,
+} from '@syncfusion/ej2-react-grids';
+import { Alert, CircularProgress } from '@mui/material';
+import { ReportsService } from '../services';
+import { validateRequestCreationForm } from '../utils/helpers';
+import { useNavigate } from 'react-router-dom';
 
 const Reports = () => {
   const {
@@ -15,32 +26,64 @@ const Reports = () => {
     editDataId,
     setEditDataId,
     formData,
+    error,
     setError,
-    setformData,
+    setFormData,
     setIsClicked,
     initialState,
     deleteDataId,
     setDeleteDataId,
   } = useStateContext();
 
-  const [departmentData, setDepartmentData] = useState([]);
+  const [reportData, setReportData] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const getAllDepartments = async () => {
-      const departments = await DepartmentsService.getAllDepartments();
-      console.log(departments);
-      setDepartmentData(departments);
+    const getOrganizationReports = async () => {
+      const response = await ReportsService.getOrganizationReports();
+      if (!response.status) {
+        setError({
+          severity: 'error',
+          message: response.message,
+        });
+        setLoadingData(false);
+        return;
+      }
+      setReportData(response.reports);
+      setLoadingData(false);
+      setAuthorized(true);
     };
 
-    getAllDepartments();
+    const getStaffReports = async () => {
+      const response = await ReportsService.getStaffReports();
+      if (!response.status) {
+        setError({
+          severity: 'error',
+          message: response.message,
+        });
+        setLoadingData(false);
+        return;
+      }
+      setReportData(response.reports);
+      setLoadingData(false);
+    };
+
+    if (currentUser.admin) {
+      getOrganizationReports();
+    } else {
+      getStaffReports();
+    }
   }, []);
 
-  const showStaffDialog = () => {
-    handleClick('department');
+  const showRequestDialog = () => {
+    handleClick('request');
   };
 
-  const createDepartment = async () => {
-    const response = await DepartmentsService.createDepartment(formData);
+  const handleCreateReportRequest = async () => {
+    const response = await ReportsService.createReportRequest(formData);
     if (!response.status) {
       setError({
         status: response.status,
@@ -49,16 +92,14 @@ const Reports = () => {
       return;
     }
 
-    setDepartmentData((preState) => [response.department, ...preState]);
+    setReportData((preState) => [response.report, ...preState]);
   };
 
-  const updateDepartment = async () => {
-    console.log('update ongoing', editDataId);
-    const response = await DepartmentsService.updateDepartment(
+  const handleUpdateReportRequest = async () => {
+    const response = await ReportsService.updateReportRequest(
       editDataId,
       formData
     );
-
     if (!response.status) {
       setError({
         status: response.status,
@@ -67,41 +108,36 @@ const Reports = () => {
       return;
     }
 
-    setDepartmentData(
-      departmentData.map((department) =>
-        department._id === response.department._id
-          ? response.department
-          : department
+    setReportData(
+      reportData.map((report) =>
+        report._id === response.report._id ? response.report : report
       )
     );
   };
 
-  const handleDepartmentAction = async () => {
-    const validationResult = validateDepartmentCreationForm(formData);
+  const handleRequestDialogFormSubmission = async () => {
+    const validationResult = validateRequestCreationForm(formData);
     if (!validationResult.status) {
       setError(validationResult);
       return;
     }
 
     if (editDataId) {
-      await updateDepartment();
+      await handleUpdateReportRequest();
     } else {
-      await createDepartment();
+      await handleCreateReportRequest();
     }
-
     setIsClicked(initialState);
     setEditDataId(null);
+    setFormData({});
   };
 
-  const handleDeleteDepartment = async () => {
+  const handleDeleteReport = async () => {
     if (!deleteDataId) return;
-
-    const response = await DepartmentsService.deleteDepartment(deleteDataId);
+    const response = await ReportsService.deleteReport(deleteDataId);
 
     if (response.status) {
-      setDepartmentData(
-        departmentData.filter((department) => department._id !== deleteDataId)
-      );
+      setReportData(reportData.filter((report) => report._id !== deleteDataId));
       setDeleteDataId(null);
       setIsClicked(initialState);
     } else {
@@ -109,39 +145,88 @@ const Reports = () => {
     }
   };
 
+  const recordClick = (args) => {
+    const { rowData, column } = args;
+    if (column.headerText == 'Action') return;
+    navigate(rowData._id);
+  };
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl wi">
       <div className="flex items-end justify-between mb-8">
         <Header category="Page" title="Reports" />
-        <button
-          type="button"
-          onClick={showStaffDialog}
-          style={{ backgroundColor: currentColor }}
-          className="text-sm text-white p-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md"
+
+        {authorized && (
+          <button
+            type="button"
+            onClick={showRequestDialog}
+            style={{ backgroundColor: currentColor }}
+            className="text-sm text-white p-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md"
+          >
+            Request Report
+          </button>
+        )}
+      </div>
+
+      {error.message && (
+        <Alert
+          variant="outlined"
+          severity={error?.severity || 'error'}
+          sx={{ my: 1 }}
         >
-          Add Department
-        </button>
-      </div>
+          {error.message}
+        </Alert>
+      )}
 
-      <div className="flex h-[100%]">
-        <DataGrid
-          autoHeight
-          columns={departmentColumns}
-          rows={departmentData}
-          getRowId={(row) => row._id}
-        />
-      </div>
+      {/* if user is admin */}
+      {currentUser.admin ? (
+        loadingData ? (
+          <div className="flex justify-center items-center space-x-2">
+            <CircularProgress /> <span>Loading ...</span>
+          </div>
+        ) : authorized ? (
+          <div className="flex h-[100%]">
+            <GridComponent dataSource={reportData} recordClick={recordClick}>
+              <ColumnsDirective>
+                {reportColumns.map((item, index) => (
+                  <ColumnDirective key={index} {...item} />
+                ))}
+              </ColumnsDirective>
+            </GridComponent>
+          </div>
+        ) : (
+          ''
+        )
+      ) : // if user is not addmin
+      loadingData ? (
+        <div className="flex justify-center items-center space-x-2">
+          <CircularProgress /> <span>Loading ...</span>
+        </div>
+      ) : (
+        <div className="flex h-[100%]">
+          <GridComponent dataSource={reportData}>
+            <ColumnsDirective>
+              {staffReportColumns.map((item, index) => (
+                <ColumnDirective key={index} {...item} />
+              ))}
+            </ColumnsDirective>
+          </GridComponent>
+        </div>
+      )}
 
-      {isClicked.department && (
-        <DepartmentDailog
-          handleDepartmentAction={handleDepartmentAction}
-          departmentData={departmentData}
+      {authorized && isClicked.request && (
+        <RequestDailog
+          type="Report"
+          requestData={reportData}
+          handleFormSubmission={handleRequestDialogFormSubmission}
         />
       )}
 
-      {isClicked.delete && (
-        <DeleteDailog handleDeleteAction={handleDeleteDepartment} />
+      {authorized && isClicked.delete && (
+        <DeleteDailog handleDeleteAction={handleDeleteReport} />
       )}
+
+      {isClicked.upload && <UploadDialog />}
     </div>
   );
 };

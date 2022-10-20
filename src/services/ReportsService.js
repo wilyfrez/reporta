@@ -4,10 +4,10 @@ import AuthHeader from './AuthHeader';
 
 import { API_URL, PATHS } from '../utils/data';
 
-class GoalsService {
-  async getOrganizationGoals() {
+class ReportsService {
+  async getOrganizationReports() {
     try {
-      const response = await axios.get(`${API_URL}/goals`, {
+      const response = await axios.get(`${API_URL}/reports`, {
         headers: AuthHeader(),
       });
       return response.data;
@@ -16,9 +16,9 @@ class GoalsService {
     }
   }
 
-  async createGoalRequest(data) {
+  async createReportRequest(data) {
     try {
-      const response = await axios.post(`${API_URL}/goals`, data, {
+      const response = await axios.post(`${API_URL}/reports`, data, {
         headers: AuthHeader(),
       });
       return response.data;
@@ -27,9 +27,9 @@ class GoalsService {
     }
   }
 
-  async updateGoalRequest(goalId, data) {
+  async updateReportRequest(goalId, data) {
     try {
-      const response = await axios.put(`${API_URL}/goals/${goalId}`, data, {
+      const response = await axios.put(`${API_URL}/reports/${goalId}`, data, {
         headers: AuthHeader(),
       });
       return response.data;
@@ -38,9 +38,9 @@ class GoalsService {
     }
   }
 
-  async getStaffGoalsByGoalId(goalId) {
+  async getStaffReportsByGoalId(goalId) {
     try {
-      const response = await axios.get(`${API_URL}/goals/${goalId}`, {
+      const response = await axios.get(`${API_URL}/reports/${goalId}`, {
         headers: AuthHeader(),
       });
       return response.data;
@@ -49,7 +49,7 @@ class GoalsService {
     }
   }
 
-  async getStaffGoals() {
+  async getReportGoals() {
     try {
       const response = await axios.get(`${API_URL}/staffgoals`, {
         headers: AuthHeader(),
@@ -62,7 +62,7 @@ class GoalsService {
     }
   }
 
-  async uploadStaffGoal(organizationId, staffGoalId, data) {
+  async uploadStaffReport(organizationId, staffGoalId, data) {
     const response = await axios.put(
       `${API_URL}/${ORGANIZATION_PATH}/${organizationId}/${GOAL_PATH}/staffgoal/${staffGoalId}`,
       data,
@@ -73,9 +73,9 @@ class GoalsService {
     return response.data;
   }
 
-  async deleteGoal(goalId) {
+  async deleteRepport(goalId) {
     try {
-      const response = await axios.delete(`${API_URL}/goals/${goalId}`, {
+      const response = await axios.delete(`${API_URL}/reports/${goalId}`, {
         headers: AuthHeader(),
       });
       return response.data;
@@ -84,10 +84,10 @@ class GoalsService {
     }
   }
 
-  async deleteStaffGoal(staffGoalId) {
+  async deleteStaffReport(staffGoalId) {
     try {
       const response = await axios.delete(
-        `${API_URL}/goals/staffgoal/${staffGoalId}`,
+        `${API_URL}/reports/staffgoal/${staffGoalId}`,
         {
           headers: AuthHeader(),
         }
@@ -123,4 +123,4 @@ class GoalsService {
   }
 }
 
-export default new GoalsService();
+export default new ReportsService();

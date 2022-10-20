@@ -15,7 +15,7 @@ import {
 import { StaffService } from '../services';
 import { formatDateForInput } from '../utils/helpers';
 
-const RequestDailog = ({ requestData, handleFormSubmission }) => {
+const RequestDailog = ({ type, requestData, handleFormSubmission }) => {
   const {
     currentUser,
     currentColor,
@@ -61,7 +61,7 @@ const RequestDailog = ({ requestData, handleFormSubmission }) => {
       <div className="float-right h-screen  duration-1000 ease-in-out dark:text-gray-200 transition-all dark:bg-[#484B52] bg-white md:w-400 p-8 md:hover:overflow-auto">
         <div className="flex justify-between items-center">
           <p className="font-semibold text-lg">
-            {editDataId ? 'Update' : 'Request'} Goal
+            {editDataId ? 'Update' : 'Request'} {type}
           </p>
 
           <IconButton
@@ -86,7 +86,7 @@ const RequestDailog = ({ requestData, handleFormSubmission }) => {
           error={error.message && !formData?.title ? true : false}
           fullWidth
           variant="outlined"
-          label="Goal title"
+          label="Title"
           id="title"
           margin="normal"
           helperText={error.message && 'Required'}

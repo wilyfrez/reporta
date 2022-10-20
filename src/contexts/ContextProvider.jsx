@@ -27,7 +27,7 @@ export const ContextProvider = ({ children }) => {
   const [isClicked, setIsClicked] = useState(initialState);
   const [error, setError] = useState({});
   const [formData, setFormData] = useState({});
-  const [uploadData, setUploadData] = useState({});
+  const [activeResourceId, setActiveResourceId] = useState(null);
   const [editDataId, setEditDataId] = useState(null);
   const [deleteDataId, setDeleteDataId] = useState(null);
   const [downloadData, setDownloadData] = useState({});
@@ -95,14 +95,14 @@ export const ContextProvider = ({ children }) => {
         setError,
         currentUser,
         setCurrentUser,
-        uploadData,
-        setUploadData,
         downloadData,
         setDownloadData,
         editDataId,
         setEditDataId,
         deleteDataId,
         setDeleteDataId,
+        activeResourceId,
+        setActiveResourceId,
       }}
     >
       {children}

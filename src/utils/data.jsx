@@ -12,6 +12,8 @@ import { getBirthday } from './helpers';
 import { Button, ButtonGroup } from '@mui/material';
 
 export const API_URL = import.meta.env.VITE_API_URL;
+export const AWS_ACCESS_KEY_ID = import.meta.env.VITE_AWS_ACCESS_KEY_ID;
+export const AWS_SECRET_ACCESS_KEY = import.meta.env.VITE_AWS_SECRET_ACCESS_KEY;
 
 export const PATHS = {
   organizations: 'organizations',
@@ -347,6 +349,8 @@ export const departmentColumns = [
   },
 ];
 
+//  GOALS
+
 export const goalColumns = [
   {
     field: 'title',
@@ -485,10 +489,12 @@ export const staffGoalColumns = [
     type: 'actions',
     width: 200,
     template: (props) => {
-      const { handleClick, setDeleteDataId, setEditDataId } = useStateContext();
+      const { handleClick, setDeleteDataId, setActiveResourceId } =
+        useStateContext();
 
       const handleUpload = () => {
-        alert('Uploading');
+        setActiveResourceId(props._id);
+        handleClick('upload');
       };
 
       const handleDownload = () => {
@@ -504,31 +510,226 @@ export const staffGoalColumns = [
       };
 
       return [
-        <ButtonGroup variant="text" aria-label="text button group">
+        <ButtonGroup
+          key="groupAction"
+          variant="text"
+          aria-label="text button group"
+        >
           <Button
             sx={{ py: 0, fontSize: '11px', color: '#03C9D7' }}
             onClick={handleUpload}
           >
-            Upload
+            {props.file_name ? 'UPDATE' : 'UPLOAD'}
           </Button>
-          <Button
-            sx={{ py: 0, fontSize: '11px', color: '#FB9678' }}
-            onClick={handleDownload}
-          >
-            Download
-          </Button>
-          <Button
+          {props.file_name && (
+            <a class=" text-[#FB9678]" href={props.file_name}>
+              DOWNLOAD
+            </a>
+          )}
+
+          {/* <Button
             sx={{ py: 0, fontSize: '11px', color: '#1A97F5' }}
             onClick={handleView}
           >
             View
-          </Button>
+          </Button> */}
         </ButtonGroup>,
       ];
     },
   },
 ];
 
+// ./ GOALS
+
+// REPORTS
+export const reportColumns = [
+  {
+    field: 'title',
+    headerText: 'Title',
+    width: '150',
+  },
+  {
+    headerText: 'Catogories',
+    width: '150',
+    field: 'category',
+  },
+
+  {
+    headerText: 'Due Date',
+    width: '120',
+    field: 'due_date',
+    type: 'Date',
+    format: 'dd/MM/yyyy',
+  },
+
+  {
+    headerText: 'Status',
+    width: '120',
+    field: 'status',
+  },
+  {
+    headerText: 'Action',
+    type: 'actions',
+    width: 100,
+    template: (props) => {
+      const { handleClick, setDeleteDataId, setEditDataId } = useStateContext();
+
+      const showDepartmentDialog = () => {
+        setEditDataId(props._id);
+        handleClick('request');
+      };
+
+      const showConfirmDeleteModal = () => {
+        setDeleteDataId(props._id);
+        handleClick('delete');
+      };
+
+      return [
+        <GridActionsCellItem
+          key="edit"
+          onClick={showDepartmentDialog}
+          icon={<FiEdit />}
+          label="Edit"
+        />,
+        <GridActionsCellItem
+          key="delete"
+          onClick={showConfirmDeleteModal}
+          icon={<BiTrash />}
+          label="Delete"
+        />,
+      ];
+    },
+  },
+];
+
+export const reportSpecificColumns = [
+  {
+    headerText: 'Staff',
+    width: '150',
+    template: (props) => (
+      <div className="flex items-center space-x-2">
+        <Avatar
+          text={`${props.staff?.first_name || ''} ${
+            props.staff?.last_name || ''
+          }`}
+        />
+
+        <span>
+          {props.staff?.first_name || ''} {props.staff?.last_name || ''}
+        </span>
+      </div>
+    ),
+  },
+
+  {
+    headerText: 'Status',
+    width: '120',
+    field: 'status',
+  },
+  {
+    headerText: 'Action',
+    type: 'actions',
+    width: 100,
+    template: (props) => {
+      const { handleClick, setDeleteDataId } = useStateContext();
+
+      const showConfirmDeleteModal = () => {
+        setDeleteDataId(props._id);
+        handleClick('delete');
+      };
+
+      return [
+        <GridActionsCellItem
+          key="delete"
+          onClick={showConfirmDeleteModal}
+          icon={<BiTrash />}
+          label="Delete"
+        />,
+      ];
+    },
+  },
+];
+
+export const staffReportColumns = [
+  {
+    field: 'goal.title',
+    headerText: 'Title',
+    width: '150',
+  },
+  {
+    headerText: 'Catogory',
+    width: '150',
+    field: 'goal.category',
+  },
+
+  {
+    headerText: 'Due Date',
+    width: '120',
+    field: 'goal.due_date',
+    type: 'Date',
+    format: 'dd/MM/yyyy',
+  },
+
+  {
+    headerText: 'Status',
+    width: '120',
+    field: 'status',
+  },
+  {
+    headerText: 'Action',
+    type: 'actions',
+    width: 200,
+    template: (props) => {
+      const { handleClick, setDeleteDataId, setActiveResourceId } =
+        useStateContext();
+
+      const handleUpload = () => {
+        setActiveResourceId(props._id);
+        handleClick('upload');
+      };
+
+      const handleDownload = () => {
+        alert('Downloading');
+      };
+      const handleView = () => {
+        alert('Viewing');
+      };
+
+      const showConfirmDeleteModal = () => {
+        setDeleteDataId(props._id);
+        handleClick('delete');
+      };
+
+      return [
+        <ButtonGroup
+          key="groupAction"
+          variant="text"
+          aria-label="text button group"
+        >
+          <Button
+            sx={{ py: 0, fontSize: '11px', color: '#03C9D7' }}
+            onClick={handleUpload}
+          >
+            {props.file_name ? 'UPDATE' : 'UPLOAD'}
+          </Button>
+          {props.file_name && (
+            <a class=" text-[#FB9678]" href={props.file_name}>
+              DOWNLOAD
+            </a>
+          )}
+
+          {/* <Button
+            sx={{ py: 0, fontSize: '11px', color: '#1A97F5' }}
+            onClick={handleView}
+          >
+            View
+          </Button> */}
+        </ButtonGroup>,
+      ];
+    },
+  },
+];
+// ./ REPORTS
 export const userProfileData = [
   {
     icon: <BiBarChartAlt2 />,

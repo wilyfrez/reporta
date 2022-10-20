@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/data';
+import AuthHeader from './AuthHeader';
 
 class AuthService {
   async register(data) {
@@ -19,6 +20,21 @@ class AuthService {
   async login(data) {
     try {
       const response = await axios.post(`${API_URL}/login`, data);
+      return response.data;
+    } catch (error) {
+      return {
+        status: false,
+        message: 'Ooops! Something went wrong. Try again',
+        responseMessage: error.message,
+      };
+    }
+  }
+
+  async loginWithToken() {
+    try {
+      const response = await axios.get(`${API_URL}/loginWithToken`, {
+        headers: AuthHeader(),
+      });
       return response.data;
     } catch (error) {
       return {

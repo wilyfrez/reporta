@@ -9,5 +9,6 @@ export { default as ActivationInstruction } from './ActivationInstruction';
 export { default as Goals } from './Goals';
 export { default as GoalSpecific } from './GoalSpecific';
 export { default as Reports } from './Reports';
+export { default as ReportSpecific } from './ReportSpecific';
 export { default as UnAuthorize } from './UnAuthorize';
 export { default as NotFound } from './NotFound';

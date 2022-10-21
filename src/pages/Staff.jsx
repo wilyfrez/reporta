@@ -48,6 +48,7 @@ const Staff = () => {
         return;
       }
       setStaffData(response.staff);
+      console.log(response.staff);
       setLoadingDatea(false);
       setAuthorized(true);
     };
@@ -130,7 +131,7 @@ const Staff = () => {
   }
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl wi">
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl border border-gray-200">
       <div className="flex items-end justify-between mb-8">
         <Header category="Page" title="Staff" />
         <button

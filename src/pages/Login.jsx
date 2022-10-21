@@ -71,10 +71,10 @@ const Login = () => {
 
         <button
           type="button"
-          className="inline-block  w-full bg-blue-500 font-semibold hover:bg-blue-600 cursor-pointer text-white rounded-lg h-[45px] mt-4"
+          className="inline-block  w-full bg-blue-500 font-semibold hover:bg-blue-600 cursor-pointer text-white rounded-lg h-[45px] mt-4 "
           onClick={handleFormSubmit}
         >
-          Log In
+          Login
         </button>
       </Paper>
     </div>
@@ -82,4 +82,3 @@ const Login = () => {
 };
 
 export default Login;
-

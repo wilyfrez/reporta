@@ -236,11 +236,11 @@ export const staffColumns = [
     headerText: 'Phone',
     width: '150',
   },
-  {
-    field: 'department.name',
-    headerText: 'Department',
-    width: '150',
-  },
+  // {
+  //   field: 'department.name',
+  //   headerText: 'Department',
+  //   width: '150',
+  // },
   {
     headerText: 'Birthday',
     width: '120',
@@ -433,7 +433,10 @@ export const goalSpecificColumns = [
   {
     headerText: 'Status',
     width: '120',
-    field: 'status',
+    field: 'submitted_at',
+    valueAccessor: (field, data, column) => {
+      return data[field] ? 'Submitted' : 'Pending';
+    },
   },
   {
     headerText: 'Action',
@@ -448,12 +451,27 @@ export const goalSpecificColumns = [
       };
 
       return [
-        <GridActionsCellItem
-          key="delete"
-          onClick={showConfirmDeleteModal}
-          icon={<BiTrash />}
-          label="Delete"
-        />,
+        <ButtonGroup
+          key="groupAction"
+          variant="text"
+          aria-label="text button group"
+        >
+          {props.file_name ? (
+            ''
+          ) : (
+            <GridActionsCellItem
+              key="delete"
+              onClick={showConfirmDeleteModal}
+              icon={<BiTrash />}
+              label="Delete"
+            />
+          )}
+          {props.file_name && (
+            <a class=" text-[#FB9678]" href={props.file_name}>
+              DOWNLOAD
+            </a>
+          )}
+        </ButtonGroup>,
       ];
     },
   },
@@ -482,7 +500,10 @@ export const staffGoalColumns = [
   {
     headerText: 'Status',
     width: '120',
-    field: 'status',
+    field: 'submitted_at',
+    valueAccessor: (field, data, column) => {
+      return data[field] ? 'Submitted' : 'Pending';
+    },
   },
   {
     headerText: 'Action',
@@ -522,7 +543,7 @@ export const staffGoalColumns = [
             {props.file_name ? 'UPDATE' : 'UPLOAD'}
           </Button>
           {props.file_name && (
-            <a class=" text-[#FB9678]" href={props.file_name}>
+            <a className=" text-[#FB9678]" href={props.file_name}>
               DOWNLOAD
             </a>
           )}
@@ -624,7 +645,10 @@ export const reportSpecificColumns = [
   {
     headerText: 'Status',
     width: '120',
-    field: 'status',
+    field: 'submitted_at',
+    valueAccessor: (field, data, column) => {
+      return data[field] ? 'Submitted' : 'Pending';
+    },
   },
   {
     headerText: 'Action',
@@ -639,12 +663,27 @@ export const reportSpecificColumns = [
       };
 
       return [
-        <GridActionsCellItem
-          key="delete"
-          onClick={showConfirmDeleteModal}
-          icon={<BiTrash />}
-          label="Delete"
-        />,
+        <ButtonGroup
+          key="groupAction"
+          variant="text"
+          aria-label="text button group"
+        >
+          {props.file_name ? (
+            ''
+          ) : (
+            <GridActionsCellItem
+              key="delete"
+              onClick={showConfirmDeleteModal}
+              icon={<BiTrash />}
+              label="Delete"
+            />
+          )}
+          {props.file_name && (
+            <a className=" text-[#FB9678]" href={props.file_name}>
+              DOWNLOAD
+            </a>
+          )}
+        </ButtonGroup>,
       ];
     },
   },
@@ -652,20 +691,20 @@ export const reportSpecificColumns = [
 
 export const staffReportColumns = [
   {
-    field: 'goal.title',
+    field: 'report.title',
     headerText: 'Title',
     width: '150',
   },
   {
     headerText: 'Catogory',
     width: '150',
-    field: 'goal.category',
+    field: 'report.category',
   },
 
   {
     headerText: 'Due Date',
     width: '120',
-    field: 'goal.due_date',
+    field: 'report.due_date',
     type: 'Date',
     format: 'dd/MM/yyyy',
   },
@@ -673,7 +712,10 @@ export const staffReportColumns = [
   {
     headerText: 'Status',
     width: '120',
-    field: 'status',
+    field: 'submitted_at',
+    valueAccessor: (field, data, column) => {
+      return data[field] ? 'Submitted' : 'Pending';
+    },
   },
   {
     headerText: 'Action',
@@ -710,10 +752,10 @@ export const staffReportColumns = [
             sx={{ py: 0, fontSize: '11px', color: '#03C9D7' }}
             onClick={handleUpload}
           >
-            {props.file_name ? 'UPDATE' : 'UPLOAD'}
+            {props.file_path ? 'UPDATE' : 'UPLOAD'}
           </Button>
-          {props.file_name && (
-            <a class=" text-[#FB9678]" href={props.file_name}>
+          {props.file_path && (
+            <a className=" text-[#FB9678]" href={props.file_path}>
               DOWNLOAD
             </a>
           )}
@@ -738,20 +780,20 @@ export const userProfileData = [
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
   },
-  {
-    icon: <BiBarChartAlt2 />,
-    title: 'My Inbox',
-    desc: 'Messages & Emails',
-    iconColor: 'rgb(0, 194, 146)',
-    iconBg: 'rgb(235, 250, 242)',
-  },
-  {
-    icon: <BiBarChartAlt2 />,
-    title: 'My Tasks',
-    desc: 'To-do and Daily Tasks',
-    iconColor: 'rgb(255, 244, 229)',
-    iconBg: 'rgb(254, 201, 15)',
-  },
+  // {
+  //   icon: <BiBarChartAlt2 />,
+  //   title: 'My Inbox',
+  //   desc: 'Messages & Emails',
+  //   iconColor: 'rgb(0, 194, 146)',
+  //   iconBg: 'rgb(235, 250, 242)',
+  // },
+  // {
+  //   icon: <BiBarChartAlt2 />,
+  //   title: 'My Tasks',
+  //   desc: 'To-do and Daily Tasks',
+  //   iconColor: 'rgb(255, 244, 229)',
+  //   iconBg: 'rgb(254, 201, 15)',
+  // },
 ];
 
 export let dataSource = [

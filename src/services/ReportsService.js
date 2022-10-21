@@ -27,9 +27,9 @@ class ReportsService {
     }
   }
 
-  async updateReportRequest(goalId, data) {
+  async updateReportRequest(reportId, data) {
     try {
-      const response = await axios.put(`${API_URL}/reports/${goalId}`, data, {
+      const response = await axios.put(`${API_URL}/reports/${reportId}`, data, {
         headers: AuthHeader(),
       });
       return response.data;
@@ -38,9 +38,9 @@ class ReportsService {
     }
   }
 
-  async getStaffReportsByGoalId(goalId) {
+  async getStaffReportsByReportId(reportId) {
     try {
-      const response = await axios.get(`${API_URL}/reports/${goalId}`, {
+      const response = await axios.get(`${API_URL}/reports/${reportId}`, {
         headers: AuthHeader(),
       });
       return response.data;
@@ -49,9 +49,9 @@ class ReportsService {
     }
   }
 
-  async getReportGoals() {
+  async getStaffReports() {
     try {
-      const response = await axios.get(`${API_URL}/staffgoals`, {
+      const response = await axios.get(`${API_URL}/staffreports`, {
         headers: AuthHeader(),
       });
       console.log(response.data);
@@ -73,9 +73,9 @@ class ReportsService {
     return response.data;
   }
 
-  async deleteRepport(goalId) {
+  async deleteRepport(reportId) {
     try {
-      const response = await axios.delete(`${API_URL}/reports/${goalId}`, {
+      const response = await axios.delete(`${API_URL}/reports/${reportId}`, {
         headers: AuthHeader(),
       });
       return response.data;
@@ -98,9 +98,9 @@ class ReportsService {
     }
   }
 
-  async submitStaffGoal(staffGoalId, data) {
+  async submitStaffReport(staffReportId, data) {
     const response = await axios.put(
-      `${API_URL}/staffgoals/${staffGoalId}`,
+      `${API_URL}/staffreports/${staffReportId}`,
       data,
       {
         headers: AuthHeader(),

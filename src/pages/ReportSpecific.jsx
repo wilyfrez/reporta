@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DeleteDailog, RequestDailog, Header } from '../components';
-import { goalSpecificColumns } from '../utils/data';
+import { reportSpecificColumns } from '../utils/data';
 import { useStateContext } from '../contexts/ContextProvider';
 import {
   ColumnDirective,
@@ -8,11 +8,11 @@ import {
   GridComponent,
 } from '@syncfusion/ej2-react-grids';
 import { Alert, CircularProgress } from '@mui/material';
-import GoalsService from '../services/GoalsService';
+import ReportsService from '../services/ReportsService';
 import { validateRequestCreationForm } from '../utils/helpers';
 import { useParams } from 'react-router-dom';
 
-const GoalSpecific = () => {
+const ReportSpecific = () => {
   const {
     currentColor,
     isClicked,
@@ -30,41 +30,39 @@ const GoalSpecific = () => {
     setDeleteDataId,
   } = useStateContext();
 
-  const [goalData, setGoalData] = useState([]);
+  const [reportData, setReportData] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
   const [authorized, setAuthorized] = useState(false);
-  const [goalTitle, setgoalTitle] = useState('');
+  const [reportTitle, setReportTitle] = useState('');
 
-  const { goalId } = useParams();
+  const { reportId } = useParams();
 
   useEffect(() => {
-    const getStaffGoalsByGoalId = async () => {
-      const response = await GoalsService.getStaffGoalsByGoalId(goalId);
+    const getStaffReportsByReportId = async () => {
+      const response = await ReportsService.getStaffReportsByReportId(reportId);
       if (!response.status) {
         setError({
           severity: 'error',
           message: response.message,
         });
-        setLoadingDatea(false);
+        setLoadingData(false);
         return;
       }
-      console.log(response.staffGoals);
-
-      setgoalTitle(response.title);
-      setGoalData(response.staffGoals);
+      setReportTitle(response.title);
+      setReportData(response.staffReports);
       setLoadingData(false);
       setAuthorized(true);
     };
 
-    getStaffGoalsByGoalId();
+    getStaffReportsByReportId();
   }, []);
 
   const showStaffDialog = () => {
     handleClick('request');
   };
 
-  const handleCreateGoalRequest = async () => {
-    const response = await GoalsService.createGoalRequest(formData);
+  const handleCreateReportRequest = async () => {
+    const response = await ReportsService.createReportRequest(formData);
     if (!response.status) {
       setError({
         status: response.status,
@@ -73,11 +71,14 @@ const GoalSpecific = () => {
       return;
     }
 
-    setGoalData((preState) => [response.goal, ...preState]);
+    setReportData((preState) => [response.goal, ...preState]);
   };
 
-  const handleUpdateGoalRequest = async () => {
-    const response = await GoalsService.updateGoalRequest(editDataId, formData);
+  const handleUpdateReportRequest = async () => {
+    const response = await ReportsService.updateReportRequest(
+      editDataId,
+      formData
+    );
     if (!response.status) {
       setError({
         status: response.status,
@@ -86,36 +87,19 @@ const GoalSpecific = () => {
       return;
     }
 
-    setGoalData(
+    setReportData(
       goalData.map((goal) =>
         goal._id === response.goal._id ? response.goal : goal
       )
     );
   };
 
-  const handleRequestDialogFormSubmission = async () => {
-    const validationResult = validateRequestCreationForm(formData);
-    if (!validationResult.status) {
-      setError(validationResult);
-      return;
-    }
-
-    if (editDataId) {
-      await handleUpdateGoalRequest();
-    } else {
-      await handleCreateGoalRequest();
-    }
-    setIsClicked(initialState);
-    setEditDataId(null);
-    setFormData({});
-  };
-
-  const handleDeleteStaffGoal = async () => {
+  const handleDeleteStaffReport = async () => {
     if (!deleteDataId) return;
-    const response = await GoalsService.deleteStaffGoal(deleteDataId);
+    const response = await ReportsService.deleteStaffReport(deleteDataId);
 
     if (response.status) {
-      setGoalData(goalData.filter((goal) => goal._id !== deleteDataId));
+      setReportData(goalData.filter((goal) => goal._id !== deleteDataId));
       setDeleteDataId(null);
       setIsClicked(initialState);
     } else {
@@ -126,7 +110,7 @@ const GoalSpecific = () => {
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl wi">
       <div className="flex items-end justify-between mb-8">
-        {loadingData ? '' : <Header category="Page" title={goalTitle} />}
+        {loadingData ? '' : <Header category="Page" title={reportTitle} />}
       </div>
 
       {error.message && (
@@ -145,9 +129,9 @@ const GoalSpecific = () => {
         </div>
       ) : authorized ? (
         <div className="flex h-[100%]">
-          <GridComponent dataSource={goalData}>
+          <GridComponent dataSource={reportData}>
             <ColumnsDirective>
-              {goalSpecificColumns.map((item, index) => (
+              {reportSpecificColumns.map((item, index) => (
                 <ColumnDirective key={index} {...item} />
               ))}
             </ColumnsDirective>
@@ -158,10 +142,10 @@ const GoalSpecific = () => {
       )}
 
       {isClicked.delete && (
-        <DeleteDailog handleDeleteAction={handleDeleteStaffGoal} />
+        <DeleteDailog handleDeleteAction={handleDeleteStaffReport} />
       )}
     </div>
   );
 };
 
-export default GoalSpecific;
+export default ReportSpecific;

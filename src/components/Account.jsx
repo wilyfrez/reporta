@@ -12,6 +12,7 @@ import {
   Departments,
   Goals,
   GoalSpecific,
+  ReportSpecific,
   NotFound,
   Overview,
   Reports,
@@ -92,6 +93,7 @@ const Account = () => {
               <Route path="/goals/:goalId" element={<GoalSpecific />} />
 
               <Route path="/reports" element={<Reports />} />
+              <Route path="/reports/:reportId" element={<ReportSpecific />} />
 
               <Route path="/*" element={<NotFound />} />
 

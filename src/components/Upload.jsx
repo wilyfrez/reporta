@@ -32,7 +32,7 @@ const Upload = ({ staffGoalId }) => {
 
     const awsUploadSignedUrl = response.awsUploadSignedUrl;
 
-    console.log('Presigned URL', awsUploadSignedUrl);
+    // console.log('Presigned URL', awsUploadSignedUrl);
 
     // Post the file to the presigned URL
     await fetch(awsUploadSignedUrl, {
@@ -49,6 +49,7 @@ const Upload = ({ staffGoalId }) => {
     const file_name = awsUploadSignedUrl.split('?')[0];
 
     // submit file path to db
+    await submitUpload();
     const submitRes = await GoalsService.submitStaffGoal(staffGoalId, {
       file_name,
     });

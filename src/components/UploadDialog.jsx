@@ -33,7 +33,7 @@ const UploadDialog = () => {
     <div className="bg-half-transparent w-full h-screen fixed nav-item top-0 right-0 flex justify-center items-center ">
       <div className="   duration-1000 ease-in-out dark:text-gray-200 transition-all dark:bg-[#484B52] bg-white md:w-400 p-8">
         <div className="flex justify-between items-center">
-          <p className="font-semibold text-lg uppercase"> Upload Type</p>
+          <p className="font-semibold text-lg uppercase">Upload</p>
 
           <IconButton
             onClick={handleCloseDailog}
@@ -46,8 +46,8 @@ const UploadDialog = () => {
             <MdOutlineCancel />
           </IconButton>
         </div>
-        <p>Title</p>
-        <p className=" text-lg font-bold mb-4">Title</p>
+        {/* <p>Title</p> */}
+        <p className=" text-lg font-bold mb-4"></p>
 
         <Upload staffGoalId={activeResourceId} />
       </div>

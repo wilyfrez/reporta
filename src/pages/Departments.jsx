@@ -34,6 +34,8 @@ const Deparmtents = () => {
   const [departmentData, setDepartmentData] = useState([]);
   const [loadingData, setLoadingDatea] = useState(true);
   const [authorized, setAuthorized] = useState(false);
+  //  api connection state
+  const [connecting, setConnecting] = useState(false);
 
   useEffect(() => {
     const getAllDepartments = async () => {
@@ -101,9 +103,11 @@ const Deparmtents = () => {
   };
 
   const handleDepartmentDialogFormSubmission = async () => {
+    setConnecting(true);
     const validationResult = validateDepartmentCreationForm(formData);
     if (!validationResult.status) {
       setError(validationResult);
+      setConnecting(false);
       return;
     }
 
@@ -113,8 +117,10 @@ const Deparmtents = () => {
       await createDepartment();
     }
 
+    setConnecting(false);
     setIsClicked(initialState);
     setEditDataId(null);
+    setformData({});
   };
 
   const handleDeleteDepartment = async () => {
@@ -144,8 +150,8 @@ const Deparmtents = () => {
         <button
           type="button"
           onClick={showStaffDialog}
-          style={{ backgroundColor: currentColor }}
-          className="text-sm text-white p-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md"
+          style={{ borderColor: currentColor, color: currentColor }}
+          className="text-sm text-white p-2   border-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md uppercase font-semibold"
         >
           Add Department
         </button>
@@ -184,6 +190,7 @@ const Deparmtents = () => {
         <DepartmentDailog
           handleFormSubmission={handleDepartmentDialogFormSubmission}
           departmentData={departmentData}
+          connecting={connecting}
         />
       )}
 

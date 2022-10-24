@@ -4,6 +4,7 @@ import { MdOutlineCancel } from 'react-icons/md';
 import {
   Alert,
   Box,
+  CircularProgress,
   FormControl,
   IconButton,
   InputLabel,
@@ -15,7 +16,12 @@ import {
 import { StaffService } from '../services';
 import { formatDateForInput } from '../utils/helpers';
 
-const RequestDailog = ({ type, requestData, handleFormSubmission }) => {
+const RequestDailog = ({
+  type,
+  requestData,
+  handleFormSubmission,
+  connecting,
+}) => {
   const {
     currentUser,
     currentColor,
@@ -134,14 +140,24 @@ const RequestDailog = ({ type, requestData, handleFormSubmission }) => {
           }}
         />
 
-        <div className="mt-2">
+        <div className="mt-5">
           <button
             type="button"
-            className="inline-block  w-full uppercase  hover:bg-black cursor-pointer text-white rounded-[10px] h-[50px] mt-4"
+            className="w-full font-semibold cursor-pointer text-white rounded-lg h-[50px] mt-5 disabled:opacity-50 flex items-center justify-center space-x-2 uppercase hover:drop-shadow-xl "
             onClick={handleSubmit}
             style={{ backgroundColor: currentColor }}
+            disabled={connecting}
           >
-            {editDataId ? 'Update' : 'Send Request'}
+            {connecting ? (
+              <div className="flex items-center justify-center space-x-2">
+                <CircularProgress size={32} />{' '}
+                <span>{editDataId ? 'Update' : 'Send Request'}</span>
+              </div>
+            ) : editDataId ? (
+              'Update'
+            ) : (
+              'Send Request'
+            )}
           </button>
         </div>
       </div>

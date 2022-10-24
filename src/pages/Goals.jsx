@@ -38,6 +38,8 @@ const Goals = () => {
   const [goalData, setGoalData] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
   const [authorized, setAuthorized] = useState(false);
+  //  api connection state
+  const [connecting, setConnecting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -113,9 +115,11 @@ const Goals = () => {
   };
 
   const handleRequestDialogFormSubmission = async () => {
+    setConnecting(true);
     const validationResult = validateRequestCreationForm(formData);
     if (!validationResult.status) {
       setError(validationResult);
+      setConnecting(false);
       return;
     }
 
@@ -124,6 +128,7 @@ const Goals = () => {
     } else {
       await handleCreateGoalRequest();
     }
+    setConnecting(false);
     setIsClicked(initialState);
     setEditDataId(null);
     setFormData({});
@@ -148,6 +153,18 @@ const Goals = () => {
     navigate(rowData._id);
   };
 
+  const submitUpload = async (uploadId, file_path) => {
+    const response = await GoalsService.submitStaffGoal(uploadId, {
+      file_path,
+    });
+
+    setGoalData(
+      goalData.map((goal) =>
+        goal._id === response.goal._id ? response.goal : goal
+      )
+    );
+  };
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl border border-gray-200">
       <div className="flex items-end justify-between mb-8">
@@ -157,8 +174,8 @@ const Goals = () => {
           <button
             type="button"
             onClick={showStaffDialog}
-            style={{ backgroundColor: currentColor }}
-            className="text-sm text-white p-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md"
+            style={{ borderColor: currentColor, color: currentColor }}
+            className="text-sm text-white p-2   border-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md uppercase font-semibold"
           >
             Request Goal
           </button>
@@ -216,6 +233,7 @@ const Goals = () => {
           type="Goal"
           requestData={goalData}
           handleFormSubmission={handleRequestDialogFormSubmission}
+          connecting={connecting}
         />
       )}
 
@@ -223,7 +241,7 @@ const Goals = () => {
         <DeleteDailog handleDeleteAction={handleDeleteGoal} />
       )}
 
-      {isClicked.upload && <UploadDialog />}
+      {isClicked.upload && <UploadDialog submitUpload={submitUpload} />}
     </div>
   );
 };

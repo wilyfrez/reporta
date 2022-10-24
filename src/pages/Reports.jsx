@@ -39,6 +39,9 @@ const Reports = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [authorized, setAuthorized] = useState(false);
 
+  //  api connection state
+  const [connecting, setConnecting] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -116,9 +119,11 @@ const Reports = () => {
   };
 
   const handleRequestDialogFormSubmission = async () => {
+    setConnecting(true);
     const validationResult = validateRequestCreationForm(formData);
     if (!validationResult.status) {
       setError(validationResult);
+      setConnecting(false);
       return;
     }
 
@@ -127,6 +132,7 @@ const Reports = () => {
     } else {
       await handleCreateReportRequest();
     }
+    setConnecting(false);
     setIsClicked(initialState);
     setEditDataId(null);
     setFormData({});
@@ -151,6 +157,18 @@ const Reports = () => {
     navigate(rowData._id);
   };
 
+  const submitUpload = async (uploadId, file_path) => {
+    const response = await ReportsService.submitStaffReport(uploadId, {
+      file_path,
+    });
+
+    setReportData(
+      reportData.map((report) =>
+        report._id === response.report._id ? response.report : report
+      )
+    );
+  };
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl wi">
       <div className="flex items-end justify-between mb-8">
@@ -160,14 +178,13 @@ const Reports = () => {
           <button
             type="button"
             onClick={showRequestDialog}
-            style={{ backgroundColor: currentColor }}
-            className="text-sm text-white p-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md"
+            style={{ borderColor: currentColor, color: currentColor }}
+            className="text-sm text-white p-2   border-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md uppercase font-semibold"
           >
             Request Report
           </button>
         )}
       </div>
-
       {error.message && (
         <Alert
           variant="outlined"
@@ -177,7 +194,6 @@ const Reports = () => {
           {error.message}
         </Alert>
       )}
-
       {/* if user is admin */}
       {currentUser.admin ? (
         loadingData ? (
@@ -213,20 +229,19 @@ const Reports = () => {
           </GridComponent>
         </div>
       )}
-
       {authorized && isClicked.request && (
         <RequestDailog
           type="Report"
           requestData={reportData}
           handleFormSubmission={handleRequestDialogFormSubmission}
+          connecting={connecting}
         />
       )}
-
       {authorized && isClicked.delete && (
         <DeleteDailog handleDeleteAction={handleDeleteReport} />
       )}
 
-      {isClicked.upload && <UploadDialog />}
+      {isClicked.upload && <UploadDialog submitUpload={submitUpload} />}
     </div>
   );
 };

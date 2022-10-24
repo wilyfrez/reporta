@@ -9,11 +9,12 @@ import {
   Stack,
   TextField,
   MenuItem,
+  CircularProgress,
 } from '@mui/material';
 import DepartmentsService from '../services/DepartmentsService';
 import { formatDateForInput } from '../utils/helpers';
 
-const StaffDailog = ({ staffData, handleFormSubmission }) => {
+const StaffDailog = ({ staffData, handleFormSubmission, connecting }) => {
   const {
     currentUser,
     currentColor,
@@ -243,11 +244,21 @@ const StaffDailog = ({ staffData, handleFormSubmission }) => {
         <div className="mt-5">
           <button
             type="button"
-            className="inline-block  w-full uppercase  hover:bg-black cursor-pointer text-white rounded-[10px] h-[50px] mt-4"
+            className="w-full font-semibold cursor-pointer text-white rounded-lg h-[50px] mt-5 disabled:opacity-50 flex items-center justify-center space-x-2 uppercase hover:drop-shadow-xl "
             onClick={handleSubmit}
             style={{ backgroundColor: currentColor }}
+            disabled={connecting}
           >
-            {editDataId ? 'Update' : 'Add Staff'}
+            {connecting ? (
+              <div className="flex items-center justify-center space-x-2">
+                <CircularProgress size={32} />{' '}
+                <span>{editDataId ? 'Update' : 'Add Staff'}</span>
+              </div>
+            ) : editDataId ? (
+              'Update'
+            ) : (
+              'Add Staff'
+            )}
           </button>
         </div>
       </div>

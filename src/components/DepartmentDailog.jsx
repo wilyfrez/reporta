@@ -5,6 +5,7 @@ import { Input } from './';
 import {
   Alert,
   Box,
+  CircularProgress,
   FormControl,
   IconButton,
   InputLabel,
@@ -15,7 +16,11 @@ import {
 } from '@mui/material';
 import { StaffService } from '../services';
 
-const DepartmentDailog = ({ departmentData, handleFormSubmission }) => {
+const DepartmentDailog = ({
+  departmentData,
+  handleFormSubmission,
+  connecting,
+}) => {
   const {
     currentUser,
     currentColor,
@@ -136,14 +141,24 @@ const DepartmentDailog = ({ departmentData, handleFormSubmission }) => {
           ))}
         </TextField>
 
-        <div className="mt-2">
+        <div className="mt-5">
           <button
             type="button"
-            className="inline-block  w-full uppercase  hover:bg-black cursor-pointer text-white rounded-[10px] h-[50px] mt-4"
+            className="w-full font-semibold cursor-pointer text-white rounded-lg h-[50px] mt-5 disabled:opacity-50 flex items-center justify-center space-x-2 uppercase hover:drop-shadow-xl "
             onClick={handleSubmit}
             style={{ backgroundColor: currentColor }}
+            disabled={connecting}
           >
-            {editDataId ? 'Update' : 'Add Deparment'}
+            {connecting ? (
+              <div className="flex items-center justify-center space-x-2">
+                <CircularProgress size={32} />{' '}
+                <span>{editDataId ? 'Update' : 'Add Department'}</span>
+              </div>
+            ) : editDataId ? (
+              'Update'
+            ) : (
+              'Add Department'
+            )}
           </button>
         </div>
       </div>

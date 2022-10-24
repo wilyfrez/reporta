@@ -456,7 +456,7 @@ export const goalSpecificColumns = [
           variant="text"
           aria-label="text button group"
         >
-          {props.file_name ? (
+          {props.file_path ? (
             ''
           ) : (
             <GridActionsCellItem
@@ -466,8 +466,8 @@ export const goalSpecificColumns = [
               label="Delete"
             />
           )}
-          {props.file_name && (
-            <a class=" text-[#FB9678]" href={props.file_name}>
+          {props.file_path && (
+            <a class=" text-[#FB9678]" href={props.file_path}>
               DOWNLOAD
             </a>
           )}
@@ -540,10 +540,10 @@ export const staffGoalColumns = [
             sx={{ py: 0, fontSize: '11px', color: '#03C9D7' }}
             onClick={handleUpload}
           >
-            {props.file_name ? 'UPDATE' : 'UPLOAD'}
+            {props.file_path ? 'UPDATE' : 'UPLOAD'}
           </Button>
-          {props.file_name && (
-            <a className=" text-[#FB9678]" href={props.file_name}>
+          {props.file_path && (
+            <a className=" text-[#FB9678]" href={props.file_path}>
               DOWNLOAD
             </a>
           )}
@@ -668,7 +668,7 @@ export const reportSpecificColumns = [
           variant="text"
           aria-label="text button group"
         >
-          {props.file_name ? (
+          {props.file_path ? (
             ''
           ) : (
             <GridActionsCellItem
@@ -678,8 +678,8 @@ export const reportSpecificColumns = [
               label="Delete"
             />
           )}
-          {props.file_name && (
-            <a className=" text-[#FB9678]" href={props.file_name}>
+          {props.file_path && (
+            <a className=" text-[#FB9678]" href={props.file_path}>
               DOWNLOAD
             </a>
           )}

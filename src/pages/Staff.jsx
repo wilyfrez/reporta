@@ -36,6 +36,9 @@ const Staff = () => {
   const [loadingData, setLoadingDatea] = useState(true);
   const [authorized, setAuthorized] = useState(false);
 
+  //  api connection state
+  const [connecting, setConnecting] = useState(false);
+
   useEffect(() => {
     const getAllStaff = async () => {
       const response = await StaffService.getAllStaff();
@@ -94,9 +97,11 @@ const Staff = () => {
   };
 
   const handleStaffDialogFormSubmission = async () => {
+    setConnecting(true);
     const validationResult = validateStaffAccountRegistrationForm(formData);
     if (!validationResult.status) {
       setError(validationResult);
+      setConnecting(false);
       return;
     }
 
@@ -105,6 +110,7 @@ const Staff = () => {
     } else {
       await handleStaffAccountRegistration();
     }
+    setConnecting(false);
     setIsClicked(initialState);
     setEditDataId(null);
     setformData({});
@@ -137,8 +143,8 @@ const Staff = () => {
         <button
           type="button"
           onClick={showStaffDialog}
-          style={{ backgroundColor: currentColor }}
-          className="text-sm text-white p-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md"
+          style={{ borderColor: currentColor, color: currentColor }}
+          className="text-sm text-white p-2   border-2 hover:drop-shadow-xl hover:bg-light-gray rounded-md uppercase font-semibold"
         >
           Add Staff
         </button>
@@ -176,6 +182,7 @@ const Staff = () => {
         <StaffDailog
           staffData={staffData}
           handleFormSubmission={handleStaffDialogFormSubmission}
+          connecting={connecting}
         />
       )}
 

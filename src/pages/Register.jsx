@@ -1,4 +1,4 @@
-import { Alert, Paper } from '@mui/material';
+import { Alert, CircularProgress, Paper } from '@mui/material';
 import { Input } from '../components';
 import { SiShopware } from 'react-icons/si';
 import {
@@ -12,10 +12,12 @@ import { useStateContext } from '../contexts/ContextProvider';
 import { AuthService } from '../services';
 import { validateAccountRegistrationForm } from '../utils/helpers';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const Login = () => {
   const { formData, error, setError } = useStateContext();
   const navigate = useNavigate();
+  const [connecting, setConnecting] = useState(false);
 
   const handleFormSubmit = async () => {
     const validationResult = validateAccountRegistrationForm(formData);
@@ -89,14 +91,32 @@ const Login = () => {
           name="address"
           placeholder="Enter organization office address"
         />
-
+        {/* 
         <button
           type="submit"
           className="inline-block  w-full bg-blue-500 font-semibold hover:bg-blue-600 cursor-pointer text-white rounded-lg h-[45px] mt-4"
           onClick={handleFormSubmit}
         >
           Get Started
-        </button>
+        </button> */}
+
+        {connecting ? (
+          <button
+            type="button"
+            className=" w-full bg-blue-500 font-semibold cursor-wait text-white rounded-lg h-[50px] mt-5 disabled:opacity-75 flex items-center justify-center space-x-2 uppercase"
+            disabled
+          >
+            <CircularProgress size={32} /> <span>Get Started</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            className=" w-full bg-blue-500 font-semibold hover:bg-blue-600 cursor-pointer text-white rounded-lg h-[50px] mt-5  flex items-center justify-center space-x-2 uppercase"
+            onClick={handleFormSubmit}
+          >
+            Get Started
+          </button>
+        )}
       </Paper>
     </div>
   );

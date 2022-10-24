@@ -18,7 +18,7 @@ const Overview = () => {
         sx={{
           width: '100%',
           height: 150,
-          background: 'linear-gradient(to right, #7f00ff, #e100ff)',
+          background: '#ffffff',
           borderRadius: 4,
         }}
       >
@@ -58,18 +58,6 @@ const Overview = () => {
               <span className=" text-sm">Pending</span>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* pending data table */}
-      <div className=" dark:bg-secondary-dark-bg bg-white  rounded-lg p-8">
-        <p className="mb-4">Pending Submissions</p>
-
-        <div className=" dark:text-gray-200 text-gray-700  h-72">
-          <DataGrid
-            rows={pendingSubmissionsRows}
-            columns={pendingSubmissionsColumns}
-          />
         </div>
       </div>
     </div>

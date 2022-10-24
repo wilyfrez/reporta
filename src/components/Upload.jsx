@@ -4,11 +4,14 @@ import axios from 'axios';
 import { API_URL } from '../utils/data';
 import { useStateContext } from '../contexts/ContextProvider';
 import { ExternalService, GoalsService } from '../services';
+import { CircularProgress } from '@mui/material';
 
-const Upload = ({ staffGoalId }) => {
-  const { currentColor } = useStateContext();
+const Upload = ({ staffGoalId, submitUpload }) => {
+  const { currentColor, handleClick, initialState } = useStateContext();
   // State to keep the selected file
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const [connecting, setConnecting] = useState(false);
 
   // State to keep the upload status
   const [status, setStatus] = useState({
@@ -26,6 +29,7 @@ const Upload = ({ staffGoalId }) => {
 
   // Click action for Upload file button
   const onUploadClick = async () => {
+    setConnecting(true);
     const response = await ExternalService.getAwsUploadSignedUrl(
       selectedFile.name
     );
@@ -43,16 +47,17 @@ const Upload = ({ staffGoalId }) => {
       body: selectedFile,
     });
 
-    setStatus({ statusCode: 1, message: 'File uploaded successfully' });
-
     // Get the uploaded file path
-    const file_name = awsUploadSignedUrl.split('?')[0];
+    const file_path = awsUploadSignedUrl.split('?')[0];
 
     // submit file path to db
-    await submitUpload();
-    const submitRes = await GoalsService.submitStaffGoal(staffGoalId, {
-      file_name,
-    });
+    await submitUpload(staffGoalId, file_path);
+
+    setStatus({ statusCode: 1, message: 'File uploaded successfully' });
+
+    setConnecting(false);
+
+    // handleClick(initialState);
   };
 
   // Convert the bytes to sizes
@@ -104,12 +109,18 @@ const Upload = ({ staffGoalId }) => {
 
       <button
         type="button"
-        className="inline-block  w-full uppercase  hover:bg-black cursor-pointer text-white rounded-[10px] h-[50px] mt-4"
-        disabled={!(selectedFile != null && !status.statusCode)}
-        onClick={onUploadClick}
+        className=" w-full font-semibold cursor-pointer text-white rounded-lg h-[50px] mt-5 disabled:opacity-50 flex items-center justify-center space-x-2 uppercase  "
+        disabled={!(selectedFile != null && !status.statusCode) || connecting}
         style={{ backgroundColor: currentColor }}
+        onClick={onUploadClick}
       >
-        UPLOAD
+        {connecting ? (
+          <div className="flex items-center justify-center space-x-2">
+            <CircularProgress size={32} /> <span>Upload</span>
+          </div>
+        ) : (
+          'Upload'
+        )}
       </button>
     </div>
   );

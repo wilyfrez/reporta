@@ -5,7 +5,7 @@ import { MdOutlineCancel } from 'react-icons/md';
 import { useStateContext } from '../contexts/ContextProvider';
 import { Upload } from './';
 
-const UploadDialog = () => {
+const UploadDialog = ({ submitUpload }) => {
   const {
     currentColor,
     setIsClicked,
@@ -49,7 +49,7 @@ const UploadDialog = () => {
         {/* <p>Title</p> */}
         <p className=" text-lg font-bold mb-4"></p>
 
-        <Upload staffGoalId={activeResourceId} />
+        <Upload staffGoalId={activeResourceId} submitUpload={submitUpload} />
       </div>
     </div>
   );

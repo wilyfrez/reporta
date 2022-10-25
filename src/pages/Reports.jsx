@@ -43,7 +43,7 @@ const Reports = () => {
   const [connecting, setConnecting] = useState(false);
 
   const navigate = useNavigate();
-
+  const type = 'reports';
   useEffect(() => {
     const getOrganizationReports = async () => {
       const response = await ReportsService.getOrganizationReports();
@@ -241,7 +241,9 @@ const Reports = () => {
         <DeleteDailog handleDeleteAction={handleDeleteReport} />
       )}
 
-      {isClicked.upload && <UploadDialog submitUpload={submitUpload} />}
+      {isClicked.upload && (
+        <UploadDialog type={type} submitUpload={submitUpload} />
+      )}
     </div>
   );
 };

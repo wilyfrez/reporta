@@ -5,10 +5,10 @@ import AuthHeader from './AuthHeader';
 import { API_URL, PATHS } from '../utils/data';
 
 class ExternalService {
-  async getAwsUploadSignedUrl(fileName) {
+  async getAwsUploadSignedUrl(fileName, folder) {
     try {
       const response = await axios.get(
-        `${API_URL}/services/s3secureUrl/${fileName}`,
+        `${API_URL}/services/s3secureUrl/${fileName}/${folder}`,
         {
           headers: AuthHeader(),
         }

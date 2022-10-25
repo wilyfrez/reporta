@@ -43,6 +43,8 @@ const Goals = () => {
 
   const navigate = useNavigate();
 
+  const type = 'goals';
+
   useEffect(() => {
     const getOrganizationGoals = async () => {
       const response = await GoalsService.getOrganizationGoals();
@@ -241,7 +243,9 @@ const Goals = () => {
         <DeleteDailog handleDeleteAction={handleDeleteGoal} />
       )}
 
-      {isClicked.upload && <UploadDialog submitUpload={submitUpload} />}
+      {isClicked.upload && (
+        <UploadDialog type={type} submitUpload={submitUpload} />
+      )}
     </div>
   );
 };

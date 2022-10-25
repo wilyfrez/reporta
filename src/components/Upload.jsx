@@ -6,7 +6,8 @@ import { useStateContext } from '../contexts/ContextProvider';
 import { ExternalService, GoalsService } from '../services';
 import { CircularProgress } from '@mui/material';
 
-const Upload = ({ staffGoalId, submitUpload }) => {
+// folder -> upload are seperated into folders [ goals, reports appraisals]
+const Upload = ({ staffGoalId, folder, submitUpload }) => {
   const { currentColor, handleClick, initialState } = useStateContext();
   // State to keep the selected file
   const [selectedFile, setSelectedFile] = useState(null);
@@ -31,7 +32,8 @@ const Upload = ({ staffGoalId, submitUpload }) => {
   const onUploadClick = async () => {
     setConnecting(true);
     const response = await ExternalService.getAwsUploadSignedUrl(
-      selectedFile.name
+      selectedFile.name,
+      folder
     );
 
     const awsUploadSignedUrl = response.awsUploadSignedUrl;
@@ -109,7 +111,7 @@ const Upload = ({ staffGoalId, submitUpload }) => {
 
       <button
         type="button"
-        className=" w-full font-semibold cursor-pointer text-white rounded-lg h-[50px] mt-5 disabled:opacity-50 flex items-center justify-center space-x-2 uppercase  "
+        className=" w-full font-semibold cursor-pointer text-white rounded-lg h-[50px] mt-5 disabled:opacity-50 flex items-center justify-center space-x-2 uppercase"
         disabled={!(selectedFile != null && !status.statusCode) || connecting}
         style={{ backgroundColor: currentColor }}
         onClick={onUploadClick}

@@ -32,7 +32,7 @@ export const ContextProvider = ({ children }) => {
   const [editDataId, setEditDataId] = useState(null);
   const [deleteDataId, setDeleteDataId] = useState(null);
   const [downloadData, setDownloadData] = useState({});
-  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser);
+  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);

@@ -14,24 +14,12 @@ const Overview = () => {
         {currentUser?.organization?.name}
       </h3>
 
-      <Card
-        sx={{
-          width: '100%',
-          height: 150,
-          background: '#ffffff',
-          borderRadius: 4,
-        }}
-      >
-        <div className="flex flex-col justify-center items-center h-full">
-          <h1 className="text-white text-center font-bold text-3xl ">
-            Welcome
-          </h1>
-          <h1 className="text-white text-center font-bold text-3xl ">
-            Esteemed {`${currentUser?.first_name} ${currentUser?.last_name}`}
-          </h1>
-        </div>
-      </Card>
-
+      <div className="flex flex-col justify-center items-center h-full">
+        <h1 className="text-gray-900 font-bold text-3xl ">
+          Welcome Esteemed{' '}
+          {`${currentUser?.first_name} ${currentUser?.last_name}`}
+        </h1>
+      </div>
       <div className="grid grid-cols-2 gap-5 my-6">
         <div className="flex p-8  dark:bg-secondary-dark-bg bg-white rounded-lg h-32">
           <div className="w-1/2">Goals </div>
